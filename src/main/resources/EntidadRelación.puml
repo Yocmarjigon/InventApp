@@ -1,0 +1,77 @@
+@startuml
+
+' Define entities and attributes with primary keys (PK) and foreign keys (FK)
+entity Producto {
+  id: UUID [PK]
+  nombre: String
+  descripcion: String
+  precioCompra: Float
+  precioVenta: Float
+  stockActual: Int
+  stockMinimo: Int
+  fechaAdquisicion: Date
+  categoriaId: Int [FK]
+  proveedorId: Int [FK]
+}
+
+entity Categoria {
+  id: UUID [PK]
+  nombre: String
+}
+
+entity Proveedor {
+  id: UUID [PK]
+  nombre: String
+  contacto: String
+  telefono: String
+  correoElectronico: String
+  direccion: String
+}
+
+
+
+entity Venta {
+  id: UUID [PK]
+  fecha: Date
+  precioTotal: Float
+  metodoPago: String
+  clienteId: Int [FK]
+  usuarioId: Int [FK]
+}
+
+entity Pedido {
+  id: UUID [PK]
+  fecha: Date
+  estado: String
+  proveedorId: Int [FK]
+  usuarioId: Int [FK]
+}
+
+entity DetalleVenta {
+  id:UUID [PK]
+  ventaId: UUID [FK]
+  productoSKU: String [FK]
+  cantidad: Int
+  precio: Float
+}
+
+
+entity Usuario {
+  id: UUID [PK]
+  nombreUsuario: String
+  contrasena: String
+  rol: String
+}
+
+' Define relationships with foreign keys
+Producto }|--|| Categoria : "pertenece a"
+Categoria ||--o{ Producto : "contiene" : FK
+Producto }|--|| Proveedor : "suministrado por"
+Proveedor ||--o{ Producto : "suministra" : FK
+Venta ||--o{ DetalleVenta : "tiene"
+Producto ||--o{ DetalleVenta : "es parte de"
+Proveedor ||--o{ Pedido : "recibe" : FK
+Usuario ||-- Venta : "gestiona" : FK
+Usuario ||-- Pedido : "gestiona" : FK
+
+@enduml
