@@ -20,8 +20,18 @@ public class Order {
 
   @Column(name = "fecha")
   private Date date;
+
   @Enumerated(EnumType.STRING)
   @Column(name = "estado")
   private State state;
+
+  @ManyToOne
+  @JoinColumn(name = "id_proveedor", nullable = false)
+  private Supplier supplier;
+
+  @ManyToOne
+  @JoinColumn(name = "id_usuario")
+  private User user;
+
 
 }

@@ -4,7 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -27,5 +29,14 @@ public class Product {
   private int stock;
   @Column(name = "fechaAdquisicion")
   private Date dateAdd;
+
+  @ManyToOne
+  @JoinColumn(name = "id_categoria", nullable = false)
+  private Category category;
+
+  @ManyToOne
+  @JoinColumn(name = "id_proveedor", nullable = false)
+  private Supplier supplier;
+
 
 }

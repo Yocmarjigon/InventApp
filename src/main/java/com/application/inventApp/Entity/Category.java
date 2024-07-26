@@ -3,6 +3,8 @@ package com.application.inventApp.Entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -18,5 +20,8 @@ public class Category {
   private UUID id;
   @Column(name = "nombre")
   private String name;
+
+  @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
+  private List<Product> products = new ArrayList<>();
 
 }
