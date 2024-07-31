@@ -35,8 +35,16 @@ public class UserService implements IUserService {
   @Override
   public Optional<User> update(UUID id, User user) {
     Optional<User> userOptional = userRepository.findById(id);
-    if (userOptional.isPresent()){
-      userRepository.save(user);
+
+
+    if (userOptional.isPresent()) {
+
+      User userUp = userOptional.get();
+      userUp.setName(user.getName());
+      userUp.setPassword(user.getPassword());
+      userUp.setRol(user.getRol());
+
+      userRepository.save(userUp);
       return userOptional;
     }
     return userOptional;
@@ -45,7 +53,7 @@ public class UserService implements IUserService {
   @Override
   public Optional<User> deleate(UUID id) {
     Optional<User> userOptional = userRepository.findById(id);
-    if (userOptional.isPresent()){
+    if (userOptional.isPresent()) {
       userRepository.delete(userOptional.get());
       return userOptional;
     }

@@ -91,7 +91,7 @@ public class UserController {
 
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<?> delete(@PathVariable String id) {
-      Optional<User> userOptional = userService.findById(UUID.fromString(id));
+      Optional<User> userOptional = userService.deleate(UUID.fromString(id));
       if (userOptional.isPresent()) {
         return ResponseEntity.ok(new ResponseOK("Usuario eliminado correctamente"));
       }
