@@ -1,6 +1,5 @@
 package com.application.inventApp.Controller.DTO;
 
-import com.application.inventApp.Entity.DetailsSales;
 import com.application.inventApp.Entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,6 +23,5 @@ public class SaleDTO {
   private Date date;
   private BigDecimal priceTotal;
   private User user;
-  private List<DetailsSales> detailsSales = new ArrayList<>();
 
 }

@@ -21,4 +21,13 @@ public class FormatDate {
     }
 
   }
+  public Date formaterDate(Date date){
+    try{
+      return dateFormat.parse(dateFormat.format(date));
+    }catch (ParseException e){
+      System.out.println(e);
+      return null;
+    }
+
+  }
 }

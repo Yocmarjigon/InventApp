@@ -18,7 +18,7 @@ import java.util.UUID;
 public class CategoryController {
   @Autowired
   private CategoryService categoryService;
-  private ModelMapper modelMapper;
+  private ModelMapper modelMapper = new ModelMapper();
 
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll(){

@@ -28,9 +28,7 @@ public class Sale {
   private BigDecimal priceTotal;
 
   @ManyToOne
-  @JoinColumn(name = "id_usuario", nullable = false)
+  @JoinColumn(name = "id_usuario")
   private User user;
-
-  @OneToMany(mappedBy = "sale", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
-  private List<DetailsSales> detailsSales = new ArrayList<>();
+  
 }

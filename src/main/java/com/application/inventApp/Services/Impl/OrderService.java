@@ -3,6 +3,7 @@ package com.application.inventApp.Services.Impl;
 import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Repository.OrderRepository;
 import com.application.inventApp.Services.IOrderService;
+import com.application.inventApp.Utils.FormatDate;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import java.util.UUID;
 public class OrderService implements IOrderService {
   @Autowired
   private OrderRepository orderRepository;
+  @Autowired private FormatDate formatDate;
 
   @Override
   public List<Order> findAll() {
@@ -28,6 +30,7 @@ public class OrderService implements IOrderService {
 
   @Override
   public void save(Order order) {
+    order.setDate(formatDate.getDateFormat());
     orderRepository.save(order);
   }
 

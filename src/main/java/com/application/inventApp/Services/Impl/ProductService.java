@@ -31,7 +31,6 @@ public class ProductService implements IProductService {
 
   @Override
   public void save(Product product) {
-    System.out.println(formatDate.getDateFormat());
     product.setDateAdd(formatDate.getDateFormat());
     productRepository.save(product);
   }

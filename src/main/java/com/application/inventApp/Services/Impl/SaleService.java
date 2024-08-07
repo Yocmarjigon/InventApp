@@ -3,6 +3,7 @@ package com.application.inventApp.Services.Impl;
 import com.application.inventApp.Entity.Sale;
 import com.application.inventApp.Repository.SaleRepository;
 import com.application.inventApp.Services.ISaleService;
+import com.application.inventApp.Utils.FormatDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,8 @@ import java.util.UUID;
 public class SaleService implements ISaleService {
   @Autowired
   private SaleRepository saleRepository;
-
+  @Autowired
+  private FormatDate formatDate;
 
   @Override
   public List<Sale> findAll() {
@@ -39,6 +41,7 @@ public class SaleService implements ISaleService {
 
   @Override
   public void save(Sale sale) {
+    sale.setDate(formatDate.getDateFormat());
     saleRepository.save(sale);
   }
 
@@ -47,8 +50,6 @@ public class SaleService implements ISaleService {
     Optional<Sale> saleOptional = saleRepository.findById(id);
     if (saleOptional.isPresent()){
       Sale saleUp = saleOptional.get();
-
-      saleUp.setDetailsSales(sale.getDetailsSales());
       saleUp.setDate(sale.getDate());
       saleUp.setUser(sale.getUser());
       saleUp.setPriceTotal(sale.getPriceTotal());

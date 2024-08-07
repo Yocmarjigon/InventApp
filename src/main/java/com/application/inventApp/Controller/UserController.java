@@ -20,7 +20,7 @@ public class UserController {
   @Autowired
   private UserService userService;
 
-  private ModelMapper modelMapper;
+  private ModelMapper modelMapper = new ModelMapper();
 
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {

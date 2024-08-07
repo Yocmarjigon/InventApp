@@ -4,6 +4,7 @@ import com.application.inventApp.Controller.DTO.SaleDTO;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Sale;
 import com.application.inventApp.Services.Impl.SaleService;
+import com.application.inventApp.Utils.FormatDate;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +19,18 @@ import java.util.UUID;
 public class SaleController {
   @Autowired
   private SaleService saleService;
-  private ModelMapper modelMapper;
+  @Autowired
+  private FormatDate formatDate;
+  
+  private ModelMapper modelMapper = new ModelMapper();
 
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {
 
-    List<SaleDTO> saleDTOS = saleService.findAll().stream().map(sale -> modelMapper.map(sale, SaleDTO.class)).toList();
+    List<SaleDTO> saleDTOS = saleService.findAll().stream().map(sale -> {
+      sale.setDate(formatDate.formaterDate(sale.getDate()));
+      return modelMapper.map(sale, SaleDTO.class);
+    }).toList();
 
     return ResponseEntity.ok(saleDTOS);
   }

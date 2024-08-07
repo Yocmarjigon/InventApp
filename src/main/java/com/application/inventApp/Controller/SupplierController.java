@@ -18,7 +18,7 @@ import java.util.UUID;
 public class SupplierController {
   @Autowired
   private SupplierService supplierService;
-  private ModelMapper modelMapper;
+  private ModelMapper modelMapper = new ModelMapper();
 
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {

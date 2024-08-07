@@ -19,7 +19,7 @@ public class OrderController {
   @Autowired
   private OrderService orderService;
 
-  private ModelMapper modelMapper;
+  private ModelMapper modelMapper = new ModelMapper();
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll(){
     List<OrderDTO> orders = orderService.findAll().stream().map(order -> modelMapper.map(order, OrderDTO.class) ).toList();
