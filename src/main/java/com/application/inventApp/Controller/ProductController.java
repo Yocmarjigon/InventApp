@@ -1,6 +1,7 @@
 package com.application.inventApp.Controller;
 
 import com.application.inventApp.Controller.DTO.ProductDTO;
+import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Product;
 import com.application.inventApp.Services.Impl.ProductService;
 import org.modelmapper.ModelMapper;
@@ -31,16 +32,7 @@ public class ProductController {
     Optional<Product> productOptional = productService.findById(UUID.fromString(id));
     if(productOptional.isPresent()){
       Product product = productOptional.get();
-      ProductDTO productDTO = ProductDTO.builder()
-          .id(product.getId())
-          .name(product.getName())
-          .description(product.getDescription())
-          .price(product.getPrice())
-          .stock(product.getStock())
-          .dateAdd(product.getDateAdd())
-          .supplier(product.getSupplier())
-          .category(product.getCategory())
-          .build();
+      ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
 
       return ResponseEntity.ok(productDTO);
     }
@@ -50,34 +42,18 @@ public class ProductController {
 
   @PostMapping("/save")
   public ResponseEntity<?> save(@RequestBody ProductDTO productDTO){
-    Product product = Product.builder()
-        .name(productDTO.getName())
-        .description(productDTO.getDescription())
-        .price(productDTO.getPrice())
-        .stock(productDTO.getStock())
-        .dateAdd(productDTO.getDateAdd())
-        .supplier(productDTO.getSupplier())
-        .category(productDTO.getCategory())
-        .build();
+    Product product = modelMapper.map(productDTO, Product.class);
     productService.save(product);
-    return ResponseEntity.ok("El producto se creo correctamente");
+    return ResponseEntity.ok(new ResponseOK("El producto se creo correctamente"));
   }
 
   @PutMapping("/update/{id}")
   public ResponseEntity<?> update(@PathVariable String id, @RequestBody ProductDTO productDTO){
-    Product product = Product.builder()
-        .name(productDTO.getName())
-        .description(productDTO.getDescription())
-        .price(productDTO.getPrice())
-        .stock(productDTO.getStock())
-        .dateAdd(productDTO.getDateAdd())
-        .supplier(productDTO.getSupplier())
-        .category(productDTO.getCategory())
-        .build();
+    Product product = modelMapper.map(productDTO, Product.class);
 
     Optional<Product> productOptional = productService.update(UUID.fromString(id), product);
     if (productOptional.isPresent()){
-      return ResponseEntity.ok("El producto se actualizo correctamente");
+      return ResponseEntity.ok(new ResponseOK("El producto se actualizo correctamente"));
     }
     return ResponseEntity.notFound().build();
 
@@ -87,7 +63,7 @@ public class ProductController {
   public ResponseEntity<?> delete(@PathVariable String id){
     Optional<Product> productOptional = productService.delete(UUID.fromString(id));
     if(productOptional.isPresent()){
-      return ResponseEntity.ok("El producto se elimino correctamente");
+      return ResponseEntity.ok(new ResponseOK("El producto se elimino correctamente"));
     }
     return ResponseEntity.notFound().build();
   }

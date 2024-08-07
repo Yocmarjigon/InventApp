@@ -1,8 +1,10 @@
 package com.application.inventApp.Controller;
 
 import com.application.inventApp.Controller.DTO.SupplierDTO;
+import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Supplier;
 import com.application.inventApp.Services.Impl.SupplierService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,19 +18,11 @@ import java.util.UUID;
 public class SupplierController {
   @Autowired
   private SupplierService supplierService;
+  private ModelMapper modelMapper;
 
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {
-    List<SupplierDTO> suppliers = supplierService.findAll().stream().map(supplier -> SupplierDTO.builder()
-        .id(supplier.getId())
-        .name(supplier.getName())
-        .contact(supplier.getContact())
-        .email(supplier.getEmail())
-        .addres(supplier.getAddres())
-        .products(supplier.getProducts())
-        .orders(supplier.getOrders())
-        .user(supplier.getUser())
-        .build()).toList();
+    List<SupplierDTO> suppliers = supplierService.findAll().stream().map(supplier -> modelMapper.map(supplier, SupplierDTO.class)).toList();
     return ResponseEntity.ok(suppliers);
   }
 
@@ -38,15 +32,7 @@ public class SupplierController {
 
     if (supplier.isPresent()) {
       Supplier supplierUp = supplier.get();
-      SupplierDTO supplierDTO = SupplierDTO.builder()
-          .name(supplierUp.getName())
-          .contact(supplierUp.getContact())
-          .email(supplierUp.getEmail())
-          .addres(supplierUp.getAddres())
-          .products(supplierUp.getProducts())
-          .orders(supplierUp.getOrders())
-          .user(supplierUp.getUser())
-          .build();
+      SupplierDTO supplierDTO = modelMapper.map(supplierUp, SupplierDTO.class);
       return ResponseEntity.ok(supplierDTO);
     }
     return ResponseEntity.notFound().build();
@@ -54,36 +40,20 @@ public class SupplierController {
 
   @PostMapping("/save")
   public ResponseEntity<?> save(@RequestBody SupplierDTO supplierDTO) {
-    Supplier supplier = Supplier.builder()
-        .name(supplierDTO.getName())
-        .contact(supplierDTO.getContact())
-        .email(supplierDTO.getEmail())
-        .addres(supplierDTO.getAddres())
-        .products(supplierDTO.getProducts())
-        .orders(supplierDTO.getOrders())
-        .user(supplierDTO.getUser())
-        .build();
+    Supplier supplier = modelMapper.map(supplierDTO, Supplier.class);
     supplierService.save(supplier);
-    return ResponseEntity.ok("El proveedor se ha creado correctamente");
+    return ResponseEntity.ok(new ResponseOK("El proveedor se ha creado correctamente"));
   }
 
   @PutMapping("/update/{id}")
   public ResponseEntity<?> update(@PathVariable String id, @RequestBody SupplierDTO supplierDTO) {
-    Supplier supplier = Supplier.builder()
-        .name(supplierDTO.getName())
-        .contact(supplierDTO.getContact())
-        .email(supplierDTO.getEmail())
-        .addres(supplierDTO.getAddres())
-        .products(supplierDTO.getProducts())
-        .orders(supplierDTO.getOrders())
-        .user(supplierDTO.getUser())
-        .build();
+    Supplier supplier = modelMapper.map(supplierDTO, Supplier.class);
 
     Optional<Supplier> supplierOptional = supplierService.update(UUID.fromString(id), supplier);
 
     if (supplierOptional.isPresent()) {
 
-      return ResponseEntity.ok("El proveedor se actualizó correctamente");
+      return ResponseEntity.ok(new ResponseOK("El proveedor se actualizó correctamente"));
 
     }
     return ResponseEntity.notFound().build();
@@ -94,7 +64,7 @@ public class SupplierController {
   public ResponseEntity<?> delete(@PathVariable String id) {
     Optional<Supplier> supplierOptional = supplierService.delete(UUID.fromString(id));
     if (supplierOptional.isPresent()) {
-      return ResponseEntity.ok("El proveedor se eliminó correctamente");
+      return ResponseEntity.ok(new ResponseOK("El proveedor se eliminó correctamente"));
     }
     return ResponseEntity.notFound().build();
   }

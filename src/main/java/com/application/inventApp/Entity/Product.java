@@ -1,5 +1,6 @@
 package com.application.inventApp.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,6 +29,7 @@ public class Product {
   private BigDecimal price;
   private int stock;
   @Column(name = "fechaAdquisicion")
+  @JsonFormat(pattern = "dd/MM/yyyy")
   private Date dateAdd;
 
   @ManyToOne

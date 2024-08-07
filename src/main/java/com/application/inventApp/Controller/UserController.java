@@ -4,6 +4,7 @@ import com.application.inventApp.Controller.DTO.UserDTO;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.User;
 import com.application.inventApp.Services.Impl.UserService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +20,11 @@ public class UserController {
   @Autowired
   private UserService userService;
 
+  private ModelMapper modelMapper;
+
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {
-    List<UserDTO> userDTOS = userService.findAll().stream().map(user -> UserDTO
-        .builder()
-        .id(user.getId())
-        .name(user.getName())
-        .password(user.getPassword())
-        .rol(user.getRol())
-        .build()
+    List<UserDTO> userDTOS = userService.findAll().stream().map(user -> modelMapper.map(user, UserDTO.class)
     ).toList();
     return ResponseEntity.ok(userDTOS);
   }
@@ -39,12 +36,7 @@ public class UserController {
     if (userOptional.isPresent()) {
 
       User user = userOptional.get();
-      UserDTO userDTO = UserDTO.builder().
-          id(user.getId())
-          .name(user.getName())
-          .password(user.getPassword())
-          .rol(user.getRol())
-          .build();
+      UserDTO userDTO = modelMapper.map(user, UserDTO.class);
 
       return ResponseEntity.ok(userDTO);
     }
@@ -55,14 +47,7 @@ public class UserController {
   public ResponseEntity<?> save(@RequestBody UserDTO userDTO) {
     if (userDTO.getName() != null || userDTO.getPassword() != null) {
 
-
-      User user = User.builder()
-          .id(userDTO.getId())
-          .name(userDTO.getName())
-          .password(userDTO.getPassword())
-          .rol(userDTO.getRol())
-          .build();
-
+      User user = modelMapper.map(userDTO, User.class);
       userService.save(user);
 
       return ResponseEntity.ok(new ResponseOK("El usuario se creo correctamente"));
@@ -72,13 +57,7 @@ public class UserController {
 
   @PutMapping("/update/{id}")
   public ResponseEntity<?> update(@PathVariable String id, UserDTO userDTO){
-    User user = User.builder()
-        .name(userDTO.getName())
-        .password(userDTO.getPassword())
-        .rol(userDTO.getRol())
-        .sales(userDTO.getSales())
-        .orders(userDTO.getOrders())
-        .build();
+    User user = modelMapper.map(userDTO, User.class);
 
     Optional<User> userOptional = userService.update(UUID.fromString(id), user);
 

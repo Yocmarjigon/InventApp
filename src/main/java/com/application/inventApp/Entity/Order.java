@@ -1,6 +1,7 @@
 package com.application.inventApp.Entity;
 
 import com.application.inventApp.Entity.Enums.State;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
@@ -18,6 +19,7 @@ public class Order {
   private UUID id;
 
   @Column(name = "fecha")
+  @JsonFormat(pattern = "dd/MM/yyyy")
   private Date date;
 
   @Enumerated(EnumType.STRING)

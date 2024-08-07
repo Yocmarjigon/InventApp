@@ -1,5 +1,6 @@
 package com.application.inventApp.Entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -20,7 +21,9 @@ public class Sale {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
   @Column(name = "fecha")
+  @JsonFormat(pattern = "dd/MM/yyyy")
   private Date date;
+
   @Column(name = "precioTotal")
   private BigDecimal priceTotal;
 

@@ -3,6 +3,7 @@ package com.application.inventApp.Controller.DTO;
 import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Entity.Product;
 import com.application.inventApp.Entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -24,7 +25,9 @@ public class SupplierDTO {
   private String contact;
   private String email;
   private String addres;
+  @JsonIgnore
   private List<Product> products = new ArrayList<>();
+  @JsonIgnore
   private List<Order> orders = new ArrayList<>();
   private User user;
 

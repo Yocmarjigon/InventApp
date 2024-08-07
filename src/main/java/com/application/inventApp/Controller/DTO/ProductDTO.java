@@ -24,6 +24,6 @@ public class ProductDTO {
   private int stock;
   private Date dateAdd;
   private Category category;
-  @JsonIgnore 
+  @JsonIgnore
   private Supplier supplier;
 }

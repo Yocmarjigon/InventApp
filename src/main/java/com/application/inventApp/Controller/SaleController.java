@@ -4,6 +4,7 @@ import com.application.inventApp.Controller.DTO.SaleDTO;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Sale;
 import com.application.inventApp.Services.Impl.SaleService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,18 +18,12 @@ import java.util.UUID;
 public class SaleController {
   @Autowired
   private SaleService saleService;
+  private ModelMapper modelMapper;
 
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {
 
-    List<SaleDTO> saleDTOS = saleService.findAll().stream().map(sale -> SaleDTO.builder()
-        .id(sale.getId())
-        .date(sale.getDate())
-        .priceTotal(sale.getPriceTotal())
-        .user(sale.getUser())
-        .detailsSales(sale.getDetailsSales())
-        .build()
-    ).toList();
+    List<SaleDTO> saleDTOS = saleService.findAll().stream().map(sale -> modelMapper.map(sale, SaleDTO.class)).toList();
 
     return ResponseEntity.ok(saleDTOS);
   }
@@ -40,13 +35,7 @@ public class SaleController {
 
       Sale sale = saleOptional.get();
 
-      SaleDTO saleDTO = SaleDTO.builder()
-          .id(sale.getId())
-          .date(sale.getDate())
-          .priceTotal(sale.getPriceTotal())
-          .user(sale.getUser())
-          .detailsSales(sale.getDetailsSales())
-          .build();
+      SaleDTO saleDTO =modelMapper.map(sale, SaleDTO.class) ;
       return ResponseEntity.ok(saleDTO);
     }
     return ResponseEntity.notFound().build();
@@ -56,12 +45,8 @@ public class SaleController {
   @PostMapping("/save")
   public ResponseEntity<?> save(@RequestBody SaleDTO saleDTO) {
     if (saleDTO.getPriceTotal() != null) {
-      Sale sale = Sale.builder()
-          .date(saleDTO.getDate())
-          .priceTotal(saleDTO.getPriceTotal())
-          .user(saleDTO.getUser())
-          .detailsSales(saleDTO.getDetailsSales())
-          .build();
+      Sale sale = modelMapper.map(saleDTO, Sale.class);
+      saleService.save(sale);
       return ResponseEntity.ok(new ResponseOK("Venta creada correctamente"));
     }
     return ResponseEntity.badRequest().build();
@@ -71,12 +56,10 @@ public class SaleController {
 
   @PutMapping("/update/{id}")
   public ResponseEntity<?> update(@PathVariable String id, @RequestBody SaleDTO saleDTO) {
-    Sale sale = Sale.builder()
-        .priceTotal(saleDTO.getPriceTotal())
-        .build();
+    Sale sale = modelMapper.map(saleDTO, Sale.class);
     Optional<Sale> saleOptional = saleService.update(UUID.fromString(id), sale);
-    if (saleOptional.isPresent()){
-      return ResponseEntity.ok("La venta se actualizó correctamente");
+    if (saleOptional.isPresent()) {
+      return ResponseEntity.ok(new ResponseOK("La venta se actualizó correctamente"));
     }
     return ResponseEntity.notFound().build();
   }
@@ -85,8 +68,8 @@ public class SaleController {
   public ResponseEntity<?> delete(@PathVariable String id) {
     Optional<Sale> saleOptional = saleService.delete(UUID.fromString(id));
 
-    if(saleOptional.isPresent()){
-      return ResponseEntity.ok("La venta fue eliminada correctamente");
+    if (saleOptional.isPresent()) {
+      return ResponseEntity.ok(new ResponseOK("La venta fue eliminada correctamente"));
     }
 
     return ResponseEntity.notFound().build();
