@@ -3,7 +3,6 @@ package com.application.inventApp.Entity;
 import com.application.inventApp.Entity.Enums.State;
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.Date;
 import java.util.UUID;
 
@@ -23,6 +22,7 @@ public class Order {
 
   @Enumerated(EnumType.STRING)
   @Column(name = "estado")
+
   private State state;
 
   @ManyToOne
@@ -32,6 +32,5 @@ public class Order {
   @ManyToOne
   @JoinColumn(name = "id_usuario")
   private User user;
-
 
 }

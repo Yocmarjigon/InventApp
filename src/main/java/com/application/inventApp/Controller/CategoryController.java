@@ -5,10 +5,7 @@ import com.application.inventApp.Entity.Category;
 import com.application.inventApp.Services.Impl.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -44,5 +41,38 @@ public class CategoryController {
     }
     return ResponseEntity.notFound().build();
   }
+  @PostMapping("/save")
+  public ResponseEntity<?> save(@RequestBody CategoryDTO categoryDTO){
+    if(categoryDTO.getName() != null){
+      Category category = Category.builder()
+          .name(categoryDTO.getName())
+          .products(categoryDTO.getProducts())
+          .build();
+      categoryService.save(category);
+      return ResponseEntity.ok("La categoria fue creada correctamente");
+  }
+    return ResponseEntity.badRequest().build();
+  }
 
+  @PutMapping("/update/{id}")
+  public ResponseEntity<?> update(@PathVariable String id, @RequestBody CategoryDTO categoryDTO){
+    Category category = Category.builder()
+        .name(categoryDTO.getName())
+        .build();
+    Optional<Category> categoryOptional = categoryService.update(UUID.fromString(id), category);
+    if(categoryOptional.isPresent()){
+      return ResponseEntity.ok("La categoria se actualizo correctamente");
+    }
+    return ResponseEntity.notFound().build();
+  }
+
+  @DeleteMapping("/delete/{id}")
+  public ResponseEntity<?> delete(@PathVariable String id){
+    Optional<Category> categoryOptional = categoryService.delete(UUID.fromString(id));
+
+    if(categoryOptional.isPresent()){
+      return ResponseEntity.ok("La categoria fue eliminada correctamente");
+    }
+    return ResponseEntity.notFound().build();
+  }
 }

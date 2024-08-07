@@ -35,10 +35,8 @@ public class CategoryService implements ICategoryService {
   public Optional<Category> update(UUID id, Category category) {
     Optional<Category> optionalCategory = categoryRepository.findById(id);
     if(optionalCategory.isPresent()){
-      Category categoryUp = Category.builder()
-          .name(category.getName())
-          .products(category.getProducts())
-          .build();
+      Category categoryUp = optionalCategory.get();
+      categoryUp.setName(category.getName());
       categoryRepository.save(categoryUp);
     }
 

@@ -33,7 +33,7 @@ public class Supplier {
   private List<Order> orders = new ArrayList<>();
 
   @ManyToOne
-  @JoinColumn(name = "id_usuario", nullable = false)
+  @JoinColumn(name = "id_usuario")
   private User user;
 
 }

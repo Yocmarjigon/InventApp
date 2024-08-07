@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/proveedor")
+@RequestMapping("/supplier")
 public class SupplierController {
   @Autowired
   private SupplierService supplierService;
@@ -20,6 +20,7 @@ public class SupplierController {
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {
     List<SupplierDTO> suppliers = supplierService.findAll().stream().map(supplier -> SupplierDTO.builder()
+        .id(supplier.getId())
         .name(supplier.getName())
         .contact(supplier.getContact())
         .email(supplier.getEmail())
