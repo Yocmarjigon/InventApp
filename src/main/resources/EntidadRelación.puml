@@ -47,15 +47,6 @@ entity Pedido {
   usuarioId: Int [FK]
 }
 
-entity DetalleVenta {
-  id:UUID [PK]
-  ventaId: UUID [FK]
-  productoSKU: String [FK]
-  cantidad: Int
-  precio: Float
-}
-
-
 entity Usuario {
   id: UUID [PK]
   nombreUsuario: String
@@ -68,8 +59,6 @@ Producto }|--|| Categoria : "pertenece a"
 Categoria ||--o{ Producto : "contiene" : FK
 Producto }|--|| Proveedor : "suministrado por"
 Proveedor ||--o{ Producto : "suministra" : FK
-Venta ||--o{ DetalleVenta : "tiene"
-Producto ||--o{ DetalleVenta : "es parte de"
 Proveedor ||--o{ Pedido : "recibe" : FK
 Usuario ||-- Venta : "gestiona" : FK
 Usuario ||-- Pedido : "gestiona" : FK

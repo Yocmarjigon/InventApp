@@ -21,7 +21,7 @@ public class Sale {
   @GeneratedValue(strategy = GenerationType.UUID)
   private UUID id;
   @Column(name = "fecha")
-  @JsonFormat(pattern = "dd/MM/yyyy")
+  @JsonFormat( shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
   private Date date;
 
   @Column(name = "precioTotal")

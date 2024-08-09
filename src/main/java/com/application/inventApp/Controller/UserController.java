@@ -56,7 +56,7 @@ public class UserController {
   }
 
   @PutMapping("/update/{id}")
-  public ResponseEntity<?> update(@PathVariable String id, UserDTO userDTO){
+  public ResponseEntity<?> update(@PathVariable String id, @RequestBody UserDTO userDTO){
     User user = modelMapper.map(userDTO, User.class);
 
     Optional<User> userOptional = userService.update(UUID.fromString(id), user);

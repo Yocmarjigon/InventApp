@@ -5,9 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -29,15 +27,15 @@ public class Product {
   private BigDecimal price;
   private int stock;
   @Column(name = "fechaAdquisicion")
-  @JsonFormat(pattern = "dd/MM/yyyy")
+  @JsonFormat( shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
   private Date dateAdd;
 
   @ManyToOne
-  @JoinColumn(name = "id_categoria", nullable = false)
+  @JoinColumn(name = "id_categoria")
   private Category category;
 
   @ManyToOne
-  @JoinColumn(name = "id_proveedor", nullable = false)
+  @JoinColumn(name = "id_proveedor")
   private Supplier supplier;
 
 

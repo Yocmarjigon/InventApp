@@ -27,7 +27,7 @@ public class ProductController {
     return products;
   }
 
-  @GetMapping("/find-if/{id}")
+  @GetMapping("/find-id/{id}")
   public ResponseEntity<?> findById(@PathVariable String id){
     Optional<Product> productOptional = productService.findById(UUID.fromString(id));
     if(productOptional.isPresent()){

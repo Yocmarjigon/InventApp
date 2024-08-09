@@ -19,7 +19,7 @@ public class Order {
   private UUID id;
 
   @Column(name = "fecha")
-  @JsonFormat(pattern = "dd/MM/yyyy")
+  @JsonFormat( shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
   private Date date;
 
   @Enumerated(EnumType.STRING)
@@ -28,7 +28,7 @@ public class Order {
   private State state;
 
   @ManyToOne
-  @JoinColumn(name = "id_proveedor", nullable = false)
+  @JoinColumn(name = "id_proveedor")
   private Supplier supplier;
 
   @ManyToOne

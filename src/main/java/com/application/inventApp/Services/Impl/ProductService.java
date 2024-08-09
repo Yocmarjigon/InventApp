@@ -39,15 +39,15 @@ public class ProductService implements IProductService {
   public Optional<Product> update(UUID id, Product product) {
     Optional<Product> productOptional = productRepository.findById(id);
     if (productOptional.isPresent()){
-      Product productUp = Product.builder()
-          .name(product.getName())
-          .description(product.getDescription())
-          .price(product.getPrice())
-          .stock(product.getStock())
-          .dateAdd(product.getDateAdd())
-          .category(product.getCategory())
-          .supplier(product.getSupplier())
-          .build();
+      Product productUp =productOptional.get();
+          productUp.setName(product.getName());
+          productUp.setDescription(product.getDescription());
+          productUp.setPrice(product.getPrice());
+          productUp.setStock(product.getStock());
+          productUp.setDateAdd(product.getDateAdd());
+          productUp.setCategory(product.getCategory());
+          productUp.setSupplier(product.getSupplier());
+      productRepository.save(productUp);
     }
     return productOptional;
   }
