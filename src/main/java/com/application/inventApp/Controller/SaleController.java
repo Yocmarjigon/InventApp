@@ -27,10 +27,7 @@ public class SaleController {
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {
 
-    List<SaleDTO> saleDTOS = saleService.findAll().stream().map(sale -> {
-      sale.setDate(formatDate.formaterDate(sale.getDate()));
-      return modelMapper.map(sale, SaleDTO.class);
-    }).toList();
+    List<SaleDTO> saleDTOS = saleService.findAll().stream().map(sale -> modelMapper.map(sale, SaleDTO.class)).toList();
 
     return ResponseEntity.ok(saleDTOS);
   }

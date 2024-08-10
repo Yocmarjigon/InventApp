@@ -36,15 +36,13 @@ public class SupplierService implements ISupplierService {
   public Optional<Supplier> update(UUID id, Supplier supplier) {
     Optional<Supplier> supplierOptional = supplierRepository.findById(id);
     if (supplierOptional.isPresent()){
-      Supplier supplierUp = Supplier.builder()
-          .name(supplier.getName())
-          .contact(supplier.getContact())
-          .email(supplier.getEmail())
-          .addres(supplier.getAddres())
-          .products(supplier.getProducts())
-          .orders(supplier.getOrders())
-          .user(supplier.getUser())
-          .build();
+      Supplier supplierUp = supplierOptional.get();
+
+      supplierUp.setName(supplier.getName());
+      supplierUp.setContact(supplier.getContact());
+      supplierUp.setEmail(supplier.getEmail());
+      supplierUp.setAddres(supplier.getAddres());
+
       supplierRepository.save(supplierUp);
     }
     return supplierOptional;

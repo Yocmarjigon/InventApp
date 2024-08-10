@@ -49,9 +49,8 @@ public class SaleService implements ISaleService {
   public Optional<Sale> update(UUID id, Sale sale) {
     Optional<Sale> saleOptional = saleRepository.findById(id);
     if (saleOptional.isPresent()){
+
       Sale saleUp = saleOptional.get();
-      saleUp.setDate(sale.getDate());
-      saleUp.setUser(sale.getUser());
       saleUp.setPriceTotal(sale.getPriceTotal());
 
       saleRepository.save(saleUp);

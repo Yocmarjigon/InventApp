@@ -1,5 +1,6 @@
 package com.application.inventApp.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -30,6 +31,7 @@ public class Supplier {
   private List<Product> products = new ArrayList<>();
 
   @OneToMany(mappedBy = "supplier", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
+  @JsonIgnore
   private List<Order> orders = new ArrayList<>();
 
   @ManyToOne

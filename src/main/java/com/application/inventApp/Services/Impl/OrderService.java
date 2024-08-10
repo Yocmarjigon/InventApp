@@ -1,5 +1,6 @@
 package com.application.inventApp.Services.Impl;
 
+import com.application.inventApp.Entity.Enums.State;
 import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Repository.OrderRepository;
 import com.application.inventApp.Services.IOrderService;
@@ -31,6 +32,7 @@ public class OrderService implements IOrderService {
   @Override
   public void save(Order order) {
     order.setDate(formatDate.getDateFormat());
+    order.setState(State.PENDIENTE);
     orderRepository.save(order);
   }
 
@@ -39,13 +41,10 @@ public class OrderService implements IOrderService {
     Optional<Order> orderOptional = orderRepository.findById(id);
     if (orderOptional.isPresent()){
 
-      Order orderUp = Order.builder()
-          .date(order.getDate())
-          .user(order.getUser())
-          .state(order.getState())
-          .supplier(order.getSupplier())
-          .build();
 
+      Order orderUp = orderOptional.get();
+      orderUp.setState(order.getState());
+      orderUp.setSupplier(order.getSupplier());
       orderRepository.save(orderUp);
     }
 

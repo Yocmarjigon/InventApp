@@ -49,22 +49,22 @@ public class OrderController {
     return ResponseEntity.ok(new ResponseOK("El pedido se completó correctamente"));
   }
 
-  @PutMapping("/update")
+  @PutMapping("/update/{id}")
   public ResponseEntity<?> update (@PathVariable String id, @RequestBody OrderDTO orderDTO){
     Order order = modelMapper.map(orderDTO, Order.class);
 
     Optional<Order> orderOptional = orderService.update(UUID.fromString(id), order);
     if(orderOptional.isPresent()){
-      return ResponseEntity.ok(new ResponseOK("El pedido se completo correctamente"));
+      return ResponseEntity.ok(new ResponseOK("El pedido se actualisó correctamente"));
     }
     return ResponseEntity.badRequest().build();
   }
 
-  @DeleteMapping("/delete")
+  @DeleteMapping("/delete/{id}")
   public ResponseEntity<?> delete(@PathVariable String id){
     Optional<Order> orderOptional = orderService.delete(UUID.fromString(id));
     if (orderOptional.isPresent()){
-      return ResponseEntity.ok(new ResponseOK("La venta se eliminó corrctamente"));
+      return ResponseEntity.ok(new ResponseOK("El pedido se eliminó corrctamente"));
     }
     return ResponseEntity.notFound().build();
   }
