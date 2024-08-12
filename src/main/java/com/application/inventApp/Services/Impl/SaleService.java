@@ -1,6 +1,8 @@
 package com.application.inventApp.Services.Impl;
 
+import com.application.inventApp.Entity.Product;
 import com.application.inventApp.Entity.Sale;
+import com.application.inventApp.Repository.ProductRepository;
 import com.application.inventApp.Repository.SaleRepository;
 import com.application.inventApp.Services.ISaleService;
 import com.application.inventApp.Utils.FormatDate;
@@ -17,6 +19,8 @@ public class SaleService implements ISaleService {
   private SaleRepository saleRepository;
   @Autowired
   private FormatDate formatDate;
+  @Autowired
+  private ProductRepository productRepository;
 
   @Override
   public List<Sale> findAll() {
@@ -40,8 +44,9 @@ public class SaleService implements ISaleService {
   }
 
   @Override
-  public void save(Sale sale) {
+  public void save(Sale sale, List<Product> products) {
     sale.setDate(formatDate.getDateFormat());
+    sale.setProducts((List<Product>) productRepository.findAllById(products.stream().map(product -> product.getId()).toList()));
     saleRepository.save(sale);
   }
 

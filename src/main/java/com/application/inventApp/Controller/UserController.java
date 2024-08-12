@@ -4,9 +4,11 @@ import com.application.inventApp.Controller.DTO.UserDTO;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.User;
 import com.application.inventApp.Services.Impl.UserService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,15 +46,16 @@ public class UserController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@RequestBody UserDTO userDTO) {
-    if (userDTO.getName() != null || userDTO.getPassword() != null) {
+  public ResponseEntity<?> save(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
+
+    if (bindingResult.hasErrors()){
+
+    }
 
       User user = modelMapper.map(userDTO, User.class);
       userService.save(user);
 
       return ResponseEntity.ok(new ResponseOK("El usuario se creo correctamente"));
-    }
-    return ResponseEntity.badRequest().build();
   }
 
   @PutMapping("/update/{id}")

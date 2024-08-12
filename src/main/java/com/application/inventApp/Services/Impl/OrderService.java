@@ -32,7 +32,6 @@ public class OrderService implements IOrderService {
   @Override
   public void save(Order order) {
     order.setDate(formatDate.getDateFormat());
-    order.setState(State.PENDIENTE);
     orderRepository.save(order);
   }
 
@@ -43,7 +42,6 @@ public class OrderService implements IOrderService {
 
 
       Order orderUp = orderOptional.get();
-      orderUp.setState(order.getState());
       orderUp.setSupplier(order.getSupplier());
       orderRepository.save(orderUp);
     }

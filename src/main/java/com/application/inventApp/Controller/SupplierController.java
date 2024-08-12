@@ -4,6 +4,7 @@ import com.application.inventApp.Controller.DTO.SupplierDTO;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Supplier;
 import com.application.inventApp.Services.Impl.SupplierService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -39,7 +40,7 @@ public class SupplierController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@RequestBody SupplierDTO supplierDTO) {
+  public ResponseEntity<?> save(@Valid @RequestBody SupplierDTO supplierDTO) {
     Supplier supplier = modelMapper.map(supplierDTO, Supplier.class);
     supplierService.save(supplier);
     return ResponseEntity.ok(new ResponseOK("El proveedor se ha creado correctamente"));

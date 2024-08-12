@@ -4,6 +4,7 @@ import com.application.inventApp.Controller.DTO.OrderDTO;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Services.Impl.OrderService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,7 +43,7 @@ public class OrderController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@RequestBody OrderDTO orderDTO){
+  public ResponseEntity<?> save(@Valid @RequestBody OrderDTO orderDTO){
     Order order = modelMapper.map(orderDTO, Order.class);
     orderService.save(order);
 

@@ -21,16 +21,12 @@ public class Order {
   @Column(name = "fecha")
   @JsonFormat( shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
   private Date date;
-
-  @Enumerated(EnumType.STRING)
-  @Column(name = "estado")
-
-  private State state;
-
+  @Column(name = "fecha-llegada")
+  @JsonFormat( shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
+  private  Date dateArrival;
   @ManyToOne
   @JoinColumn(name = "id_proveedor")
   private Supplier supplier;
-
   @ManyToOne
   @JoinColumn(name = "id_usuario")
   private User user;

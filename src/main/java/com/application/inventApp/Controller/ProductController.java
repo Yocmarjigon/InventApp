@@ -4,6 +4,7 @@ import com.application.inventApp.Controller.DTO.ProductDTO;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Product;
 import com.application.inventApp.Services.Impl.ProductService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +42,7 @@ public class ProductController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@RequestBody ProductDTO productDTO){
+  public ResponseEntity<?> save(@Valid @RequestBody ProductDTO productDTO){
     Product product = modelMapper.map(productDTO, Product.class);
     productService.save(product);
     return ResponseEntity.ok(new ResponseOK("El producto se creo correctamente"));

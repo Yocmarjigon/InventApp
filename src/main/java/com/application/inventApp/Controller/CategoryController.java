@@ -4,9 +4,13 @@ import com.application.inventApp.Controller.DTO.CategoryDTO;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Category;
 import com.application.inventApp.Services.Impl.CategoryService;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,13 +41,15 @@ public class CategoryController {
     return ResponseEntity.notFound().build();
   }
   @PostMapping("/save")
-  public ResponseEntity<?> save(@RequestBody CategoryDTO categoryDTO){
-    if(categoryDTO.getName() != null){
+  public ResponseEntity<?> save(@Valid @RequestBody CategoryDTO categoryDTO, BindingResult bindingResult){
+      if(bindingResult.hasFieldErrors()){
+        return new ResponseEntity<>(new ResponseOK("Revisé los valores ingresados"), HttpStatus.BAD_REQUEST);
+      }
+
       Category category = modelMapper.map(categoryDTO, Category.class);
       categoryService.save(category);
       return ResponseEntity.ok(new ResponseOK("La categoria fue creada correctamente"));
-  }
-    return ResponseEntity.badRequest().build();
+
   }
 
   @PutMapping("/update/{id}")

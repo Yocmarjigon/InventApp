@@ -5,6 +5,7 @@ import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Sale;
 import com.application.inventApp.Services.Impl.SaleService;
 import com.application.inventApp.Utils.FormatDate;
+import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -47,10 +48,10 @@ public class SaleController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@RequestBody SaleDTO saleDTO) {
+  public ResponseEntity<?> save(@Valid @RequestBody SaleDTO saleDTO) {
     if (saleDTO.getPriceTotal() != null) {
       Sale sale = modelMapper.map(saleDTO, Sale.class);
-      saleService.save(sale);
+      saleService.save(sale, saleDTO.getProducts());
       return ResponseEntity.ok(new ResponseOK("Venta creada correctamente"));
     }
     return ResponseEntity.badRequest().build();

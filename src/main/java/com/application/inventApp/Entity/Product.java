@@ -1,11 +1,14 @@
 package com.application.inventApp.Entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 @NoArgsConstructor
@@ -37,6 +40,11 @@ public class Product {
   @ManyToOne
   @JoinColumn(name = "id_proveedor")
   private Supplier supplier;
+
+  @ManyToMany(mappedBy = "products")
+  @JsonIgnore
+  private List<Sale> sales = new ArrayList<>();
+
 
 
 }
