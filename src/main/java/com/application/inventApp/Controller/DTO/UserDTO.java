@@ -1,5 +1,7 @@
 package com.application.inventApp.Controller.DTO;
 
+import com.application.inventApp.Controller.DTO.ValidationCustom.PasswordValid;
+import com.application.inventApp.Controller.DTO.ValidationCustom.RolValid;
 import com.application.inventApp.Entity.Enums.Rol;
 import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Entity.Sale;
@@ -22,10 +24,10 @@ public class UserDTO {
   private UUID id;
   @NotBlank(message = "El usuario debe contar con un nombre")
   private String name;
-  @NotBlank(message = "El usurio debe contar con una contraseña")
+  @PasswordValid
   private String password;
-  @NotBlank(message = "El usuario debe contar con un rol")
-  private Rol rol;
+  @RolValid
+  private String rol;
   private List<Order> orders = new ArrayList<>();
   private List<Sale> sales = new ArrayList<>();
 }

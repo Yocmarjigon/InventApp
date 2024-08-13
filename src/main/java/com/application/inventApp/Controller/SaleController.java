@@ -8,7 +8,9 @@ import com.application.inventApp.Utils.FormatDate;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -48,14 +50,16 @@ public class SaleController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody SaleDTO saleDTO) {
-    if (saleDTO.getPriceTotal() != null) {
+  public ResponseEntity<?> save(@Valid @RequestBody SaleDTO saleDTO, BindingResult bindingResult) {
+
+    if (bindingResult.hasErrors()){
+      return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
+    }
+
+
       Sale sale = modelMapper.map(saleDTO, Sale.class);
       saleService.save(sale, saleDTO.getProducts());
       return ResponseEntity.ok(new ResponseOK("Venta creada correctamente"));
-    }
-    return ResponseEntity.badRequest().build();
-
 
   }
 

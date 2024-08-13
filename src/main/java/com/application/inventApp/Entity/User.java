@@ -3,7 +3,6 @@ package com.application.inventApp.Entity;
 import com.application.inventApp.Entity.Enums.Rol;
 import jakarta.persistence.*;
 import lombok.*;
-import org.aspectj.weaver.ast.Or;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,10 +20,22 @@ public class User {
   private UUID id;
   @Column(name = "nombre")
   private String name;
-  @Column(name = "contraseña")
+  @Column(name = "contrasenia")
   private String password;
   @Enumerated(EnumType.STRING)
   private Rol rol;
+
+  @Column(name = "is_enabled")
+  private boolean isEnabled = true;
+
+  @Column(name = "account_No_Expired")
+  private boolean accountNoExpired = true;
+
+  @Column(name = "account_No_Locked")
+  private boolean accountNoLocked = true;
+
+  @Column(name = "credential_No_Expired")
+  private boolean credentialNoExpired = true;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
   private List<Order> orders = new ArrayList<>();

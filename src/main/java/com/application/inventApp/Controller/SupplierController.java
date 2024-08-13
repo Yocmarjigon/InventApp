@@ -7,7 +7,9 @@ import com.application.inventApp.Services.Impl.SupplierService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +42,11 @@ public class SupplierController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody SupplierDTO supplierDTO) {
+  public ResponseEntity<?> save(@Valid @RequestBody SupplierDTO supplierDTO, BindingResult bindingResult) {
+    if (bindingResult.hasErrors()){
+      return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
+    }
+
     Supplier supplier = modelMapper.map(supplierDTO, Supplier.class);
     supplierService.save(supplier);
     return ResponseEntity.ok(new ResponseOK("El proveedor se ha creado correctamente"));

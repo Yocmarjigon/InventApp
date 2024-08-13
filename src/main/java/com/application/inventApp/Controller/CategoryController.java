@@ -40,10 +40,11 @@ public class CategoryController {
     }
     return ResponseEntity.notFound().build();
   }
+
   @PostMapping("/save")
   public ResponseEntity<?> save(@Valid @RequestBody CategoryDTO categoryDTO, BindingResult bindingResult){
       if(bindingResult.hasFieldErrors()){
-        return new ResponseEntity<>(new ResponseOK("Revisé los valores ingresados"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
       }
 
       Category category = modelMapper.map(categoryDTO, Category.class);
