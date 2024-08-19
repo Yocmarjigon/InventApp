@@ -1,6 +1,8 @@
 package com.application.inventApp.Controller;
 
-import com.application.inventApp.Controller.DTO.OrderDTO;
+import com.application.inventApp.Controller.DTO.OrderDTOFind;
+import com.application.inventApp.Controller.DTO.OrderDTOSave;
+import com.application.inventApp.Controller.DTO.OrderDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Services.Impl.OrderService;
@@ -25,7 +27,7 @@ public class OrderController {
   private ModelMapper modelMapper = new ModelMapper();
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll(){
-    List<OrderDTO> orders = orderService.findAll().stream().map(order -> modelMapper.map(order, OrderDTO.class) ).toList();
+    List<OrderDTOFind> orders = orderService.findAll().stream().map(order -> modelMapper.map(order, OrderDTOFind.class) ).toList();
 
     return ResponseEntity.ok(orders);
 
@@ -37,7 +39,7 @@ public class OrderController {
 
     if(orderOptional.isPresent()){
       Order order = orderOptional.get();
-      OrderDTO orderDTO = modelMapper.map(order, OrderDTO.class);
+      OrderDTOFind orderDTO = modelMapper.map(order, OrderDTOFind.class);
 
       return ResponseEntity.ok(orderDTO);
     }
@@ -45,7 +47,7 @@ public class OrderController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody OrderDTO orderDTO, BindingResult bindingResult){
+  public ResponseEntity<?> save(@Valid @RequestBody OrderDTOSave orderDTO, BindingResult bindingResult){
     if (bindingResult.hasErrors()){
       return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
     }
@@ -56,7 +58,7 @@ public class OrderController {
   }
 
   @PutMapping("/update/{id}")
-  public ResponseEntity<?> update (@PathVariable String id, @RequestBody OrderDTO orderDTO){
+  public ResponseEntity<?> update (@PathVariable String id, @RequestBody OrderDTOUpdate orderDTO){
     Order order = modelMapper.map(orderDTO, Order.class);
 
     Optional<Order> orderOptional = orderService.update(UUID.fromString(id), order);

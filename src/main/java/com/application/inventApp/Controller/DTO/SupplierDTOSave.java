@@ -4,7 +4,6 @@ import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Entity.Product;
 import com.application.inventApp.Entity.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -20,19 +19,13 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-public class SupplierDTO {
+public class SupplierDTOSave {
 
-  private UUID id;
   @NotBlank(message = "El proveedor debe contar con un nombre")
   private String name;
   @NotBlank(message = "El proveedor debe tener un contact")
   private String contact;
   @Email(message = "El proveedor debe contar con un correo")
   private String email;
-  @JsonIgnore
-  private List<Product> products = new ArrayList<>();
-  @JsonIgnore
-  private List<Order> orders = new ArrayList<>();
-  private User user;
 
 }

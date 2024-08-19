@@ -14,10 +14,7 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity(name = "proveedor")
-public class Supplier {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+public class Supplier extends BaseEntity{
   @Column(name = "nombre")
   private String name;
   @Column(name = "contacto")

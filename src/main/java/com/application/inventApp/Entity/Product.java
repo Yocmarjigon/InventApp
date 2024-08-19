@@ -17,10 +17,7 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity(name = "producto")
-public class Product {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+public class Product extends BaseEntity{
 
   @Column(name = "nombre")
   private String name;

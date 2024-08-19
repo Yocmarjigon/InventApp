@@ -1,11 +1,11 @@
 package com.application.inventApp.Security;
 
-import com.application.inventApp.Entity.Enums.Rol;
+import com.application.inventApp.Security.Filter.JwtTokenValidator;
 import com.application.inventApp.Services.Impl.UserService;
+import com.application.inventApp.Utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -18,15 +18,18 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfig {
+  @Autowired
+  private JwtUtils jwtUtils;
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
@@ -35,18 +38,16 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .httpBasic(Customizer.withDefaults())
         .authorizeHttpRequests(http -> {
-          http.requestMatchers("/product/*").hasAnyRole("VENDEDOR", "GESTOR");
-          http.requestMatchers("/category/*").hasAnyRole("VENDEDOR", "GESTOR");
-          http.requestMatchers("/supplier/*").hasAnyRole("VENDEDOR", "GESTOR");
-          http.requestMatchers("/order/*").hasAnyRole("VENDEDOR", "GESTOR");
-          http.requestMatchers("/sale/*").hasAnyRole("VENDEDOR", "GESTOR");
-          http.requestMatchers("/user/find-all").hasAnyRole("ADMIN");
-          http.requestMatchers("/user/find-id").hasAnyRole("ADMIN");
-          http.requestMatchers("/user/save").hasAnyRole("ADMIN");
-          http.requestMatchers("/user/update").hasAnyRole("ADMIN");
-          http.requestMatchers("/user/delete").hasAnyRole("ADMIN");
+          http.requestMatchers("/product/**").hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
+          http.requestMatchers("/category/**").hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
+          http.requestMatchers("/supplier/**").hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
+          http.requestMatchers("/order/**").hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
+          http.requestMatchers("/sale/**").hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
+          http.requestMatchers("/user/**").hasAnyRole("ADMIN");
+          http.requestMatchers("/auth/login").permitAll();
           http.anyRequest().denyAll();
         })
+        .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)
         .build();
   }
 
@@ -76,6 +77,6 @@ public class SecurityConfig {
 
   @Bean
   public PasswordEncoder passwordEncoder() {
-    return NoOpPasswordEncoder.getInstance();
+    return new BCryptPasswordEncoder();
   }
 }

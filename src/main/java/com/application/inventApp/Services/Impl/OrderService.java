@@ -1,11 +1,9 @@
 package com.application.inventApp.Services.Impl;
 
-import com.application.inventApp.Entity.Enums.State;
 import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Repository.OrderRepository;
 import com.application.inventApp.Services.IOrderService;
 import com.application.inventApp.Utils.FormatDate;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +15,8 @@ import java.util.UUID;
 public class OrderService implements IOrderService {
   @Autowired
   private OrderRepository orderRepository;
-  @Autowired private FormatDate formatDate;
+  @Autowired
+  private FormatDate formatDate;
 
   @Override
   public List<Order> findAll() {
@@ -32,13 +31,14 @@ public class OrderService implements IOrderService {
   @Override
   public void save(Order order) {
     order.setDate(formatDate.getDateFormat());
+    order.setDateArrival(formatDate.formaterDate(order.getDateArrival()));
     orderRepository.save(order);
   }
 
   @Override
   public Optional<Order> update(UUID id, Order order) {
     Optional<Order> orderOptional = orderRepository.findById(id);
-    if (orderOptional.isPresent()){
+    if (orderOptional.isPresent()) {
 
 
       Order orderUp = orderOptional.get();
@@ -54,7 +54,7 @@ public class OrderService implements IOrderService {
   public Optional<Order> delete(UUID id) {
     Optional<Order> orderOptional = orderRepository.findById(id);
 
-    if(orderOptional.isPresent()){
+    if (orderOptional.isPresent()) {
       orderRepository.delete(orderOptional.get());
     }
     return orderOptional;

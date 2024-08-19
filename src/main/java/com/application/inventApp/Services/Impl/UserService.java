@@ -1,14 +1,23 @@
 package com.application.inventApp.Services.Impl;
 
+import com.application.inventApp.Controller.DTO.AuthUserRequest;
+import com.application.inventApp.Controller.Response.AuthUserResponse;
 import com.application.inventApp.Entity.User;
 import com.application.inventApp.Repository.UserRepository;
 import com.application.inventApp.Services.IUserService;
+import com.application.inventApp.Utils.JwtUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -17,10 +26,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class UserService implements IUserService , UserDetailsService {
+public class UserService implements IUserService, UserDetailsService {
 
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private JwtUtils jwtUtils;
+  @Autowired
+  private PasswordEncoder passwordEncoder;
 
 
   @Override
@@ -36,6 +50,8 @@ public class UserService implements IUserService , UserDetailsService {
 
   @Override
   public void save(User user) {
+    BCryptPasswordEncoder bcrypt = new BCryptPasswordEncoder();
+    user.setPassword(bcrypt.encode(user.getPassword()));
     userRepository.save(user);
   }
 
@@ -69,12 +85,12 @@ public class UserService implements IUserService , UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    Optional<User> userOptional = userRepository.findUserByname(username);
-    if (userOptional.isPresent()){
-      User user = userOptional.get();
+    try {
+      Optional<User> userOptional = userRepository.findUserByname(username);
+      User user = userOptional.orElseThrow(() -> new UsernameNotFoundException("El usuario: " + username + "no existe"));
+      System.out.println(user);
       List<SimpleGrantedAuthority> authorityList = new ArrayList<>();
       authorityList.add(new SimpleGrantedAuthority("ROLE_".concat(user.getRol().name())));
-      authorityList.add(new SimpleGrantedAuthority(user.getName()));
 
       return new org.springframework.security.core.userdetails.User(
           user.getName(),
@@ -84,7 +100,32 @@ public class UserService implements IUserService , UserDetailsService {
           user.isCredentialNoExpired(),
           user.isAccountNoLocked(),
           authorityList);
+
+
+    } catch (Exception e) {
+      System.out.println(e + " <----Login exceptions---------");
+      return null;
     }
-    return null;
   }
+  public AuthUserResponse loginUser(AuthUserRequest user) {
+    String username = user.getName();
+    String password = user.getPassword();
+
+    Authentication authentication = this.authenticate(username, password);
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+    String accesToken = jwtUtils.createToken(authentication);
+
+    AuthUserResponse authUserResponse = new AuthUserResponse(username, "Ususario authenticado correctamente", true, accesToken);
+    return authUserResponse;
+
+  }
+    public Authentication authenticate(String username, String password){
+        UserDetails userDetails = this.loadUserByUsername(username);
+        if (userDetails == null) throw new BadCredentialsException("Nombre de usuario o contraseña incorrectos.");
+
+        if(!passwordEncoder.matches(password, userDetails.getPassword())) throw new BadCredentialsException("Contraseña incorrecta.");
+
+        return new UsernamePasswordAuthenticationToken(username, userDetails.getPassword(), userDetails.getAuthorities());
+
+    }
 }

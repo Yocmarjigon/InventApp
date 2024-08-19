@@ -1,11 +1,9 @@
 package com.application.inventApp.Entity;
 
-import com.application.inventApp.Entity.Enums.State;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.Date;
-import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,10 +11,7 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity(name = "pedido")
-public class Order {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+public class Order extends BaseEntity{
 
   @Column(name = "fecha")
   @JsonFormat( shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")

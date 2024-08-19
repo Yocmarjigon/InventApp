@@ -1,10 +1,9 @@
 package com.application.inventApp.Controller.DTO.ValidationCustom;
 
-import com.application.inventApp.Entity.Enums.Rol;
+import com.application.inventApp.Enums.Rol;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 public class RolValidation implements ConstraintValidator<RolValid, String> {

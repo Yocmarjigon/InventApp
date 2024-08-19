@@ -1,6 +1,8 @@
 package com.application.inventApp.Controller;
 
-import com.application.inventApp.Controller.DTO.CategoryDTO;
+import com.application.inventApp.Controller.DTO.CategoryDTOFind;
+import com.application.inventApp.Controller.DTO.CategoryDTOSave;
+import com.application.inventApp.Controller.DTO.CategoryDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Category;
 import com.application.inventApp.Services.Impl.CategoryService;
@@ -10,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/categoria")
+@RequestMapping("/category")
 public class CategoryController {
   @Autowired
   private CategoryService categoryService;
@@ -26,7 +27,7 @@ public class CategoryController {
 
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll(){
-    List<CategoryDTO> categories = categoryService.findAll().stream().map(category -> modelMapper.map(category, CategoryDTO.class)).toList();
+    List<CategoryDTOFind> categories = categoryService.findAll().stream().map(category -> modelMapper.map(category, CategoryDTOFind.class)).toList();
     return  ResponseEntity.ok(categories);
   }
 
@@ -35,14 +36,14 @@ public class CategoryController {
     Optional<Category> categoryOptional = categoryService.findById(UUID.fromString(id));
     if(categoryOptional.isPresent()){
       Category category = categoryOptional.get();
-      CategoryDTO categoryDTO =modelMapper.map(category, CategoryDTO.class);
+      CategoryDTOFind categoryDTO =modelMapper.map(category, CategoryDTOFind.class);
       return ResponseEntity.ok(categoryDTO);
     }
     return ResponseEntity.notFound().build();
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody CategoryDTO categoryDTO, BindingResult bindingResult){
+  public ResponseEntity<?> save(@Valid @RequestBody CategoryDTOFind categoryDTO, BindingResult bindingResult){
       if(bindingResult.hasFieldErrors()){
         return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
       }
@@ -54,7 +55,7 @@ public class CategoryController {
   }
 
   @PutMapping("/update/{id}")
-  public ResponseEntity<?> update(@PathVariable String id, @RequestBody CategoryDTO categoryDTO){
+  public ResponseEntity<?> update(@PathVariable String id, @RequestBody CategoryDTOUpdate categoryDTO){
     Category category = modelMapper.map(categoryDTO, Category.class);
     Optional<Category> categoryOptional = categoryService.update(UUID.fromString(id), category);
     if(categoryOptional.isPresent()){

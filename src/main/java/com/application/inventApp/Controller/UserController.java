@@ -1,6 +1,8 @@
 package com.application.inventApp.Controller;
 
-import com.application.inventApp.Controller.DTO.UserDTO;
+import com.application.inventApp.Controller.DTO.UserDTOFind;
+import com.application.inventApp.Controller.DTO.UserDTOSave;
+import com.application.inventApp.Controller.DTO.UserDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.User;
 import com.application.inventApp.Services.Impl.UserService;
@@ -27,7 +29,7 @@ public class UserController {
 
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {
-    List<UserDTO> userDTOS = userService.findAll().stream().map(user -> modelMapper.map(user, UserDTO.class)
+    List<UserDTOFind> userDTOS = userService.findAll().stream().map(user -> modelMapper.map(user, UserDTOFind.class)
     ).toList();
     return ResponseEntity.ok(userDTOS);
   }
@@ -39,7 +41,7 @@ public class UserController {
     if (userOptional.isPresent()) {
 
       User user = userOptional.get();
-      UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+      UserDTOFind userDTO = modelMapper.map(user, UserDTOFind.class);
 
       return ResponseEntity.ok(userDTO);
     }
@@ -47,7 +49,7 @@ public class UserController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody UserDTO userDTO, BindingResult bindingResult) {
+  public ResponseEntity<?> save(@Valid @RequestBody UserDTOSave userDTO, BindingResult bindingResult) {
 
     if (bindingResult.hasErrors()){
       return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
@@ -60,7 +62,7 @@ public class UserController {
   }
 
   @PutMapping("/update/{id}")
-  public ResponseEntity<?> update(@PathVariable String id, @RequestBody UserDTO userDTO){
+  public ResponseEntity<?> update(@PathVariable String id, @RequestBody UserDTOUpdate userDTO){
     User user = modelMapper.map(userDTO, User.class);
 
     Optional<User> userOptional = userService.update(UUID.fromString(id), user);

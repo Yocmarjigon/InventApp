@@ -1,12 +1,11 @@
 package com.application.inventApp.Entity;
 
-import com.application.inventApp.Entity.Enums.Rol;
+import com.application.inventApp.Enums.Rol;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -14,10 +13,8 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity(name = "usuario")
-public class User {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+public class User extends BaseEntity{
+
   @Column(name = "nombre")
   private String name;
   @Column(name = "contrasenia")

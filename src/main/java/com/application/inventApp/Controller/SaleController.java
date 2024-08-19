@@ -1,6 +1,8 @@
 package com.application.inventApp.Controller;
 
-import com.application.inventApp.Controller.DTO.SaleDTO;
+import com.application.inventApp.Controller.DTO.SaleDTOFind;
+import com.application.inventApp.Controller.DTO.SaleDTOSave;
+import com.application.inventApp.Controller.DTO.SaleDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Sale;
 import com.application.inventApp.Services.Impl.SaleService;
@@ -30,7 +32,7 @@ public class SaleController {
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {
 
-    List<SaleDTO> saleDTOS = saleService.findAll().stream().map(sale -> modelMapper.map(sale, SaleDTO.class)).toList();
+    List<SaleDTOFind> saleDTOS = saleService.findAll().stream().map(sale -> modelMapper.map(sale, SaleDTOFind.class)).toList();
 
     return ResponseEntity.ok(saleDTOS);
   }
@@ -42,7 +44,7 @@ public class SaleController {
 
       Sale sale = saleOptional.get();
 
-      SaleDTO saleDTO =modelMapper.map(sale, SaleDTO.class) ;
+      SaleDTOFind saleDTO =modelMapper.map(sale, SaleDTOFind.class) ;
       return ResponseEntity.ok(saleDTO);
     }
     return ResponseEntity.notFound().build();
@@ -50,7 +52,7 @@ public class SaleController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody SaleDTO saleDTO, BindingResult bindingResult) {
+  public ResponseEntity<?> save(@Valid @RequestBody SaleDTOSave saleDTO, BindingResult bindingResult) {
 
     if (bindingResult.hasErrors()){
       return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
@@ -64,7 +66,7 @@ public class SaleController {
   }
 
   @PutMapping("/update/{id}")
-  public ResponseEntity<?> update(@PathVariable String id, @RequestBody SaleDTO saleDTO) {
+  public ResponseEntity<?> update(@PathVariable String id, @RequestBody SaleDTOUpdate saleDTO) {
     Sale sale = modelMapper.map(saleDTO, Sale.class);
     Optional<Sale> saleOptional = saleService.update(UUID.fromString(id), sale);
     if (saleOptional.isPresent()) {

@@ -1,17 +1,23 @@
 package com.application.inventApp.Controller;
 
+import com.application.inventApp.Controller.DTO.AuthUserRequest;
+import com.application.inventApp.Controller.Response.AuthUserResponse;
 import com.application.inventApp.Controller.Response.ResponseOK;
+import com.application.inventApp.Services.Impl.UserService;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-  @GetMapping("/login")
-  public ResponseEntity<?> login(){
-    return new ResponseEntity<>(new ResponseOK("Hola te saluda el endpoint de login"), HttpStatus.OK);
+@Autowired
+private UserService userService;
+
+  @PostMapping("/login")
+  public ResponseEntity<AuthUserResponse> login(@RequestBody @Valid AuthUserRequest user){
+    return new ResponseEntity<>(userService.loginUser(user), HttpStatus.OK);
   }
 }

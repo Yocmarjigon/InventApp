@@ -1,4 +1,4 @@
-package com.application.inventApp.Entity.Enums;
+package com.application.inventApp.Enums;
 
 public enum State {
   PENDIENTE, PROCESO, RECIBIDO

@@ -16,10 +16,7 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity(name = "venta")
-public class Sale {
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+public class Sale extends BaseEntity{
   @Column(name = "fecha")
   @JsonFormat( shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
   private Date date;

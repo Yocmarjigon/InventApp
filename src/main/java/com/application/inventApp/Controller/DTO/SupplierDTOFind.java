@@ -1,34 +1,28 @@
 package com.application.inventApp.Controller.DTO;
 
+import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Entity.Product;
 import com.application.inventApp.Entity.User;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
-public class SaleDTO {
-
+public class SupplierDTOFind {
   private UUID id;
-  private Date date;
-  @Min(value = 1, message = "El precio total debe tener 1 como valor minimo")
-  private BigDecimal priceTotal;
-  @Size(min = 1, message = "La venta debe tener por lo menos un producto")
-  private List<Product> products;
+  private String name;
+  private String contact;
+  private String email;
   private User user;
-
-
 }

@@ -1,6 +1,8 @@
 package com.application.inventApp.Controller;
 
-import com.application.inventApp.Controller.DTO.SupplierDTO;
+import com.application.inventApp.Controller.DTO.SupplierDTOFind;
+import com.application.inventApp.Controller.DTO.SupplierDTOSave;
+import com.application.inventApp.Controller.DTO.SupplierDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Supplier;
 import com.application.inventApp.Services.Impl.SupplierService;
@@ -25,7 +27,7 @@ public class SupplierController {
 
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {
-    List<SupplierDTO> suppliers = supplierService.findAll().stream().map(supplier -> modelMapper.map(supplier, SupplierDTO.class)).toList();
+    List<SupplierDTOFind> suppliers = supplierService.findAll().stream().map(supplier -> modelMapper.map(supplier, SupplierDTOFind.class)).toList();
     return ResponseEntity.ok(suppliers);
   }
 
@@ -35,14 +37,14 @@ public class SupplierController {
 
     if (supplier.isPresent()) {
       Supplier supplierUp = supplier.get();
-      SupplierDTO supplierDTO = modelMapper.map(supplierUp, SupplierDTO.class);
+      SupplierDTOFind supplierDTO = modelMapper.map(supplierUp, SupplierDTOFind.class);
       return ResponseEntity.ok(supplierDTO);
     }
     return ResponseEntity.notFound().build();
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody SupplierDTO supplierDTO, BindingResult bindingResult) {
+  public ResponseEntity<?> save(@Valid @RequestBody SupplierDTOSave supplierDTO, BindingResult bindingResult) {
     if (bindingResult.hasErrors()){
       return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
     }
@@ -53,7 +55,7 @@ public class SupplierController {
   }
 
   @PutMapping("/update/{id}")
-  public ResponseEntity<?> update(@PathVariable String id, @RequestBody SupplierDTO supplierDTO) {
+  public ResponseEntity<?> update(@PathVariable String id, @RequestBody SupplierDTOUpdate supplierDTO) {
     Supplier supplier = modelMapper.map(supplierDTO, Supplier.class);
 
     Optional<Supplier> supplierOptional = supplierService.update(UUID.fromString(id), supplier);

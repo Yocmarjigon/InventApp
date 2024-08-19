@@ -14,11 +14,8 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity(name = "categoria")
-public class Category {
-
-  @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+public class Category extends BaseEntity{
+  
   @Column(name = "nombre")
   private String name;
 

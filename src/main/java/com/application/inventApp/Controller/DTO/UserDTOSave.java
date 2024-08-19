@@ -2,10 +2,8 @@ package com.application.inventApp.Controller.DTO;
 
 import com.application.inventApp.Controller.DTO.ValidationCustom.PasswordValid;
 import com.application.inventApp.Controller.DTO.ValidationCustom.RolValid;
-import com.application.inventApp.Entity.Enums.Rol;
 import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Entity.Sale;
-import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,8 +18,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-public class UserDTO {
-  private UUID id;
+public class UserDTOSave {
   @NotBlank(message = "El usuario debe contar con un nombre")
   private String name;
   @PasswordValid
