@@ -6,6 +6,7 @@ import com.application.inventApp.Controller.DTO.ProductDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Product;
 import com.application.inventApp.Services.Impl.ProductService;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class ProductController {
   }
 
   @GetMapping("/find-id/{id}")
-  public ResponseEntity<?> findById(@PathVariable String id) {
+  public ResponseEntity<?> findById(@PathVariable String id)throws JWTVerificationException {
     Optional<Product> productOptional = productService.findById(UUID.fromString(id));
     if (productOptional.isPresent()) {
       Product product = productOptional.get();

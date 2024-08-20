@@ -1,6 +1,7 @@
 package com.application.inventApp.Security.Filter;
 
 import com.application.inventApp.Utils.JwtUtils;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -27,18 +28,19 @@ public class JwtTokenValidator extends OncePerRequestFilter {
   private JwtUtils jwtUtils;
 
   @Override
-  protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException {
-    String jwtToken = response.getHeader(HttpHeaders.AUTHORIZATION);
+  protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException, JWTVerificationException {
+    String jwtToken = request.getHeader(HttpHeaders.AUTHORIZATION);
+
     if (jwtToken != null){
       jwtToken = jwtToken.substring(7);
-
+      System.out.println(jwtToken);
       DecodedJWT decodedJWT = jwtUtils.validateToken(jwtToken);
 
       String username = jwtUtils.extractUsername(decodedJWT);
-      String roles = jwtUtils.getClaim(decodedJWT, "roles").toString();
+      String roles = jwtUtils.getClaim(decodedJWT, "roles").asString();
 
       Collection<? extends GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
-      SecurityContext context = SecurityContextHolder.getContext();
+      SecurityContext context = SecurityContextHolder.createEmptyContext();
       Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);
 
       context.setAuthentication(authentication);
