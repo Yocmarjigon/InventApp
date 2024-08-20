@@ -8,7 +8,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -38,7 +37,7 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
       String username = jwtUtils.extractUsername(decodedJWT);
       String roles = jwtUtils.getClaim(decodedJWT, "roles").asString();
-
+      
       Collection<? extends GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(roles);
       SecurityContext context = SecurityContextHolder.createEmptyContext();
       Authentication authentication = new UsernamePasswordAuthenticationToken(username, null, authorities);

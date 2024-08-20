@@ -38,13 +38,16 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .httpBasic(Customizer.withDefaults())
         .authorizeHttpRequests(http -> {
-          http.requestMatchers("/product/**").hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
-          http.requestMatchers("/category/**").hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
-          http.requestMatchers("/supplier/**").hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
-          http.requestMatchers("/order/**").hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
-          http.requestMatchers("/sale/**").hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
+
+          http.requestMatchers(
+              "/category/**",
+              "/product/**",
+              "/supplier/**",
+              "/order/**",
+              "/sale/**"
+          ).hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
           http.requestMatchers("/user/**").hasAnyRole("ADMIN");
-          http.requestMatchers("/auth/login").permitAll();
+          http.requestMatchers("/auth/login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
           http.anyRequest().denyAll();
         })
         .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)

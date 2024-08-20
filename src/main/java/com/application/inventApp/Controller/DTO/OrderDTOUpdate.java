@@ -2,7 +2,6 @@ package com.application.inventApp.Controller.DTO;
 
 import com.application.inventApp.Controller.DTO.ValidationCustom.ObjectValid;
 import com.application.inventApp.Entity.Supplier;
-import com.application.inventApp.Entity.User;
 import jakarta.validation.constraints.FutureOrPresent;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

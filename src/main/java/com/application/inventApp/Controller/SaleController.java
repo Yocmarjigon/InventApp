@@ -6,7 +6,6 @@ import com.application.inventApp.Controller.DTO.SaleDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Sale;
 import com.application.inventApp.Services.Impl.SaleService;
-import com.application.inventApp.Utils.FormatDate;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +23,7 @@ import java.util.UUID;
 public class SaleController {
   @Autowired
   private SaleService saleService;
-  @Autowired
-  private FormatDate formatDate;
-  
+
   private ModelMapper modelMapper = new ModelMapper();
 
   @GetMapping("/find-all")

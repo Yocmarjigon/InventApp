@@ -6,10 +6,18 @@ import com.application.inventApp.Entity.Supplier;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
 
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+@Builder
 public class ProductDTOUpdate {
   @NotBlank(message = "El producto debe contar con un nombre")
   private String name;

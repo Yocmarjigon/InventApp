@@ -2,7 +2,6 @@ package com.application.inventApp.Controller;
 
 import com.application.inventApp.Controller.DTO.AuthUserRequest;
 import com.application.inventApp.Controller.Response.AuthUserResponse;
-import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Services.Impl.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

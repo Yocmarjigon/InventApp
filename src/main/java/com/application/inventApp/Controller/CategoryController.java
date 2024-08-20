@@ -1,7 +1,6 @@
 package com.application.inventApp.Controller;
 
 import com.application.inventApp.Controller.DTO.CategoryDTOFind;
-import com.application.inventApp.Controller.DTO.CategoryDTOSave;
 import com.application.inventApp.Controller.DTO.CategoryDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Category;
