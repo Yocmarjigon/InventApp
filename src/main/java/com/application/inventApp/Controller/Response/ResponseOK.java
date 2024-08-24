@@ -1,23 +1,26 @@
 package com.application.inventApp.Controller.Response;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@JsonInclude
+import java.util.List;
+
+@Getter
+@Setter
 public class ResponseOK {
 
   private String message;
+  private List<String> data;
 
-  public ResponseOK(String message){
+  public ResponseOK(String message) {
     this.message = message;
   }
 
-  public String getMessage() {
-    return message;
+  public ResponseOK(List<String> data) {
+    this.data = data;
   }
 
-  public void setMessage(String message) {
-    this.message = message;
-  }
 
   @Override
   public String toString() {

@@ -29,7 +29,6 @@ public class JwtUtils {
     String roles = authentication.getAuthorities().stream()
         .map(grantedAuthority -> grantedAuthority.getAuthority())
         .collect(Collectors.joining(","));
-System.out.println(roles);
     String jwtToken = JWT.create()
         .withIssuer(this.userGenetator)
         .withSubject(username)

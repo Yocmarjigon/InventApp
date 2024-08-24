@@ -3,11 +3,10 @@ package com.application.inventApp.Services.Impl;
 import com.application.inventApp.Entity.Product;
 import com.application.inventApp.Repository.ProductRepository;
 import com.application.inventApp.Services.IProductService;
-import com.application.inventApp.Utils.FormatDate;
+import com.application.inventApp.Utils.Format;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -17,7 +16,7 @@ public class ProductService implements IProductService {
   @Autowired
   private ProductRepository productRepository;
   @Autowired
-  private FormatDate formatDate;
+  private Format formatDate;
 
   @Override
   public List<Product> findAll() {

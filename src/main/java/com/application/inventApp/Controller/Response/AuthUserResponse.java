@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.Collection;
+import java.util.List;
+
 
 @AllArgsConstructor
 @Data
@@ -12,5 +15,6 @@ public class AuthUserResponse {
   private String name;
   private String message;
   private boolean status;
+  private Collection<?> roles;
   private String jwt;
 }

@@ -3,7 +3,7 @@ package com.application.inventApp.Services.Impl;
 import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Repository.OrderRepository;
 import com.application.inventApp.Services.IOrderService;
-import com.application.inventApp.Utils.FormatDate;
+import com.application.inventApp.Utils.Format;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,7 @@ public class OrderService implements IOrderService {
   @Autowired
   private OrderRepository orderRepository;
   @Autowired
-  private FormatDate formatDate;
+  private Format formatDate;
 
   @Override
   public List<Order> findAll() {

@@ -32,7 +32,6 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
     if (jwtToken != null){
       jwtToken = jwtToken.substring(7);
-      System.out.println(jwtToken);
       DecodedJWT decodedJWT = jwtUtils.validateToken(jwtToken);
 
       String username = jwtUtils.extractUsername(decodedJWT);

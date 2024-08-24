@@ -18,11 +18,7 @@ import java.util.List;
 @Data
 @Builder
 public class SaleDTOSave {
-  @Min(value = 1, message = "El precio total debe tener 1 como valor minimo")
-  private BigDecimal priceTotal;
   @ListObjectValid
   private List<Product> products;
   private User user;
-
-
 }

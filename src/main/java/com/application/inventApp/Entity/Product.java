@@ -34,6 +34,7 @@ public class Product extends BaseEntity{
   private Category category;
 
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "id_proveedor")
   private Supplier supplier;
 

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,10 +21,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class UserService implements IUserService, UserDetailsService {
@@ -113,9 +111,10 @@ public class UserService implements IUserService, UserDetailsService {
 
     Authentication authentication = this.authenticate(username, password);
     SecurityContextHolder.getContext().setAuthentication(authentication);
+    Collection<?> roles = authentication.getAuthorities().stream().map(grantedAuthority -> grantedAuthority.getAuthority()).toList();
     String accesToken = jwtUtils.createToken(authentication);
 
-    AuthUserResponse authUserResponse = new AuthUserResponse(username, "Ususario authenticado correctamente", true, accesToken);
+    AuthUserResponse authUserResponse = new AuthUserResponse(username, "Ususario authenticado correctamente", true, roles,accesToken);
     return authUserResponse;
 
   }
