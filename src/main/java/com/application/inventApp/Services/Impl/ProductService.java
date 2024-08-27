@@ -16,7 +16,7 @@ public class ProductService implements IProductService {
   @Autowired
   private ProductRepository productRepository;
   @Autowired
-  private Format formatDate;
+  private Format format;
 
   @Override
   public List<Product> findAll() {
@@ -30,22 +30,27 @@ public class ProductService implements IProductService {
 
   @Override
   public void save(Product product) {
-    product.setDateAdd(formatDate.getDateFormat());
-    productRepository.save(product);
+    try {
+      product.setPrice(format.formaterMoney(product.getPrice()));
+      product.setDateAdd(format.getDateFormat());
+      productRepository.save(product);
+    } catch (Exception e) {
+      System.out.println(e);
+    }
   }
 
   @Override
   public Optional<Product> update(UUID id, Product product) {
     Optional<Product> productOptional = productRepository.findById(id);
-    if (productOptional.isPresent()){
-      Product productUp =productOptional.get();
-          productUp.setName(product.getName());
-          productUp.setDescription(product.getDescription());
-          productUp.setPrice(product.getPrice());
-          productUp.setStock(product.getStock());
-          productUp.setDateAdd(product.getDateAdd());
-          productUp.setCategory(product.getCategory());
-          productUp.setSupplier(product.getSupplier());
+    if (productOptional.isPresent()) {
+      Product productUp = productOptional.get();
+      productUp.setName(product.getName());
+      productUp.setDescription(product.getDescription());
+      productUp.setPrice(product.getPrice());
+      productUp.setStock(product.getStock());
+      productUp.setDateAdd(product.getDateAdd());
+      productUp.setCategory(product.getCategory());
+      productUp.setSupplier(product.getSupplier());
       productRepository.save(productUp);
     }
     return productOptional;
@@ -53,8 +58,8 @@ public class ProductService implements IProductService {
 
   @Override
   public Optional<Product> delete(UUID id) {
-    Optional<Product> productOptional  = productRepository.findById(id);
-    if(productOptional.isPresent()){
+    Optional<Product> productOptional = productRepository.findById(id);
+    if (productOptional.isPresent()) {
       productRepository.delete(productOptional.get());
     }
 

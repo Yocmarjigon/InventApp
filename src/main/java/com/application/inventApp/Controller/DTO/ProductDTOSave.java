@@ -24,10 +24,9 @@ public class ProductDTOSave {
   private String name;
   @Size(min = 20, max = 400, message = "La descripción tener como minimo 100 caracteres y maximo 400")
   private String description;
-  @Min(value = 1, message = "El precio debe tener 1 como valor minimo")
+  @Min(value = 1000, message = "El precio debe tener 1 como valor minimo")
   private BigDecimal price;
   private int stock;
-  private Date dateAdd;
   @ObjectValid
   private Category category;
   @ObjectValid

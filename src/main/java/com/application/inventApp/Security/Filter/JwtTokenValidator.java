@@ -28,6 +28,7 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
   @Override
   protected void doFilterInternal(@NonNull HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain) throws ServletException, IOException, JWTVerificationException {
+   try{
     String jwtToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 
     if (jwtToken != null){
@@ -44,6 +45,9 @@ public class JwtTokenValidator extends OncePerRequestFilter {
       context.setAuthentication(authentication);
       SecurityContextHolder.setContext(context);
     }
+   }catch(JWTVerificationException e){
+    throw new JWTVerificationException("Token invalido");
+   }
       filterChain.doFilter(request, response);
   }
 }

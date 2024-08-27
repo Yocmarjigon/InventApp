@@ -20,7 +20,7 @@ public class SaleService implements ISaleService {
   @Autowired
   private SaleRepository saleRepository;
   @Autowired
-  private Format formatDate;
+  private Format format;
   @Autowired
   private ProductRepository productRepository;
 
@@ -49,21 +49,25 @@ public class SaleService implements ISaleService {
   public void save(Sale sale, List<Product> products) {
     try{
       List<Product> productsI = (List<Product>) productRepository.findAllById(products.stream().map(product -> product.getId()).toList());
+
       List<BigDecimal> prices = productsI.stream().map(product -> product.getPrice()).toList();
-      DecimalFormat df = new DecimalFormat("#,###.00");
+
+
       BigDecimal addTotal = new BigDecimal(0);
-
-
+      
       for (int i = 0; i<prices.size(); i++){
         addTotal = addTotal.add(prices.get(i));
       }
-      BigDecimal totalFormater = new BigDecimal(df.format(addTotal));
+
+      BigDecimal totalFormater = this.format.formaterMoney(addTotal);
+
       System.out.println(totalFormater + " __________________----------__________jdkls");
 
-      sale.setDate(formatDate.getDateFormat());
+      sale.setDate(format.getDateFormat());
       sale.setProducts(productsI);
       sale.setPriceTotal(totalFormater);
       saleRepository.save(sale);
+
     }catch (Exception e){
       System.out.println(e);
     }

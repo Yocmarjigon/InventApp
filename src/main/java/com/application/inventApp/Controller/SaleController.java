@@ -6,6 +6,8 @@ import com.application.inventApp.Controller.DTO.SaleDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Sale;
 import com.application.inventApp.Services.Impl.SaleService;
+import com.auth0.jwt.exceptions.JWTVerificationException;
+
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +51,7 @@ public class SaleController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody SaleDTOSave saleDTO, BindingResult bindingResult) {
+  public ResponseEntity<?> save(@Valid @RequestBody SaleDTOSave saleDTO, BindingResult bindingResult) throws JWTVerificationException {
 
     if (bindingResult.hasErrors()){
       return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
