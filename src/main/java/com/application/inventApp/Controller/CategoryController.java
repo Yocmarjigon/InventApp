@@ -5,7 +5,6 @@ import com.application.inventApp.Controller.DTO.CategoryDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Category;
 import com.application.inventApp.Services.Impl.CategoryService;
-import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,7 @@ public class CategoryController {
   private ModelMapper modelMapper = new ModelMapper();
 
   @GetMapping("/find-all")
-  public ResponseEntity<?> findAll() throws JWTVerificationException {
+  public ResponseEntity<?> findAll()  {
     List<CategoryDTOFind> categories = categoryService.findAll().stream().map(category -> modelMapper.map(category, CategoryDTOFind.class)).toList();
     return  ResponseEntity.ok(categories);
   }
