@@ -31,7 +31,6 @@ public class ProductService implements IProductService {
   @Override
   public void save(Product product) {
     try {
-      product.setPrice(format.formaterMoney(product.getPrice()));
       product.setDateAdd(format.getDateFormat());
       productRepository.save(product);
     } catch (Exception e) {

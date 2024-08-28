@@ -1,12 +1,11 @@
 package com.application.inventApp.Controller;
 
-import com.application.inventApp.Controller.DTO.SaleDTOFind;
-import com.application.inventApp.Controller.DTO.SaleDTOSave;
-import com.application.inventApp.Controller.DTO.SaleDTOUpdate;
+import com.application.inventApp.Controller.DTO.*;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Sale;
 import com.application.inventApp.Services.Impl.SaleService;
 
+import com.application.inventApp.Utils.Format;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,13 +23,28 @@ import java.util.UUID;
 public class SaleController {
   @Autowired
   private SaleService saleService;
-
+  @Autowired
+  private Format format;
   private ModelMapper modelMapper = new ModelMapper();
 
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {
 
-    List<SaleDTOFind> saleDTOS = saleService.findAll().stream().map(sale -> modelMapper.map(sale, SaleDTOFind.class)).toList();
+    List<SaleDTOFind> saleDTOS = saleService.findAll().stream().map(sale -> {
+
+      SaleDTOFind saleDTOFind = modelMapper.map(sale, SaleDTOFind.class);
+
+      saleDTOFind.setProducts(
+          sale.getProducts().stream().map(product -> {
+            ProductDTOSaleFind productDTOSaleFind = modelMapper.map(product, ProductDTOSaleFind.class);
+            productDTOSaleFind.setPrice(format.formaterMoney(product.getPrice()));
+            return productDTOSaleFind;
+          }).toList()
+      );
+
+      saleDTOFind.setPriceTotal(format.formaterMoney(sale.getPriceTotal()));
+      return saleDTOFind;
+    }).toList();
 
     return ResponseEntity.ok(saleDTOS);
   }

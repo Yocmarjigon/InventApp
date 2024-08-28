@@ -4,9 +4,11 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 @Component
 public class Format {
@@ -34,9 +36,8 @@ public class Format {
 
   }
 
-  public BigDecimal formaterMoney(BigDecimal decimal) throws Exception{
-    DecimalFormat df = new DecimalFormat("#,###.##");
-    BigDecimal totalFormater = new BigDecimal(df.format(decimal));
-    return totalFormater;
+  public String formaterMoney(BigDecimal decimal) {
+    NumberFormat numberFormat = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
+    return numberFormat.format(decimal);
   }
 }

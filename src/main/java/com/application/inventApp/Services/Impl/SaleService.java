@@ -59,13 +59,11 @@ public class SaleService implements ISaleService {
         addTotal = addTotal.add(prices.get(i));
       }
 
-      BigDecimal totalFormater = this.format.formaterMoney(addTotal);
 
-      System.out.println(totalFormater + " __________________----------__________jdkls");
 
       sale.setDate(format.getDateFormat());
       sale.setProducts(productsI);
-      sale.setPriceTotal(totalFormater);
+      sale.setPriceTotal(addTotal);
       saleRepository.save(sale);
 
     }catch (Exception e){

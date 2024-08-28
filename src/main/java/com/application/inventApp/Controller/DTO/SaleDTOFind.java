@@ -19,7 +19,7 @@ import java.util.UUID;
 public class SaleDTOFind {
   private UUID id;
   private Date date;
-  private BigDecimal priceTotal;
-  private List<Product> products;
+  private String priceTotal;
+  private List<ProductDTOSaleFind> products;
   private User user;
 }

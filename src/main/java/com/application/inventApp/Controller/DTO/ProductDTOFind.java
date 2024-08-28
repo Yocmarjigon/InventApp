@@ -18,7 +18,7 @@ public class ProductDTOFind {
   private UUID id;
   private String name;
   private String description;
-  private BigDecimal price;
+  private String price;
   private int stock;
   private Date dateAdd;
   private Category category;

@@ -11,7 +11,10 @@ public class ListObjectValidation implements ConstraintValidator<ListObjectValid
 
   @Override
   public boolean isValid(List<Product> products, ConstraintValidatorContext constraintValidatorContext) {
-    if (products != null && !products.isEmpty()) return true;
+     boolean validList = products.stream().map(Product::getId).anyMatch(uuid -> uuid != null && !uuid.equals(""));
+     if (validList) return true;
     return false;
   }
+
+
 }

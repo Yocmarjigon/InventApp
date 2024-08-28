@@ -6,6 +6,7 @@ import com.application.inventApp.Controller.DTO.ProductDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Product;
 import com.application.inventApp.Services.Impl.ProductService;
+import com.application.inventApp.Utils.Format;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,18 @@ import java.util.UUID;
 public class ProductController {
   @Autowired
   private ProductService productService;
+  @Autowired
+  private Format format;
   private ModelMapper modelMapper = new ModelMapper();
 
   @GetMapping("/find-all")
   public List<ProductDTOFind> findAll() {
-    List<ProductDTOFind> products = productService.findAll().stream().map(product -> modelMapper.map(product, ProductDTOFind.class)).toList();
+
+    List<ProductDTOFind> products = productService.findAll().stream().map(product -> {
+      ProductDTOFind productDTOFind = modelMapper.map(product, ProductDTOFind.class);
+      productDTOFind.setPrice(format.formaterMoney(product.getPrice()));
+      return productDTOFind;
+    }).toList();
     return products;
   }
 
