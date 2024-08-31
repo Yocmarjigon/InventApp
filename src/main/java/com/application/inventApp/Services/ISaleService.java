@@ -14,4 +14,5 @@ public interface ISaleService {
   Optional<Sale> delete(UUID id);
   void save(Sale sale,List<Product> product );
   Optional<Sale> update(UUID id, Sale sale);
+  
 }
