@@ -1,4 +1,6 @@
-package com.application.inventApp.Controller.DTO;
+package com.application.inventApp.Controller.DTO.UserDTOs;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +12,8 @@ import java.util.UUID;
 @NoArgsConstructor
 @Data
 @Builder
-public class CategoryDTOFind {
+public class UserDTOFind {
   private UUID id;
   private String name;
+  private String rol;
 }

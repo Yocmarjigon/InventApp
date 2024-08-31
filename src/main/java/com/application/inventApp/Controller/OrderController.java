@@ -1,8 +1,7 @@
 package com.application.inventApp.Controller;
 
-import com.application.inventApp.Controller.DTO.OrderDTOFind;
-import com.application.inventApp.Controller.DTO.OrderDTOSave;
-import com.application.inventApp.Controller.DTO.OrderDTOUpdate;
+import com.application.inventApp.Controller.DTO.OrderDTOs.OrderDTOFind;
+import com.application.inventApp.Controller.DTO.OrderDTOs.OrderDTOSave;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Order;
 import com.application.inventApp.Services.Impl.OrderService;
@@ -27,53 +26,78 @@ public class OrderController {
   private ModelMapper modelMapper = new ModelMapper();
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll(){
-    List<OrderDTOFind> orders = orderService.findAll().stream().map(order -> modelMapper.map(order, OrderDTOFind.class) ).toList();
+    try {
+      List<OrderDTOFind> orders = orderService.findAll().stream().map(order -> modelMapper.map(order, OrderDTOFind.class) ).toList();
 
-    return ResponseEntity.ok(orders);
+      return ResponseEntity.ok(orders);
+    }catch (Exception e){
+      throw e;
+    }
+
 
   }
 
   @GetMapping("/find-id/{id}")
   public ResponseEntity<?> findById(@PathVariable String id){
-    Optional<Order> orderOptional = orderService.findById(UUID.fromString(id));
+    try{
+      Optional<Order> orderOptional = orderService.findById(UUID.fromString(id));
 
-    if(orderOptional.isPresent()){
-      Order order = orderOptional.get();
-      OrderDTOFind orderDTO = modelMapper.map(order, OrderDTOFind.class);
+      if(orderOptional.isPresent()){
+        Order order = orderOptional.get();
+        OrderDTOFind orderDTO = modelMapper.map(order, OrderDTOFind.class);
 
-      return ResponseEntity.ok(orderDTO);
+        return ResponseEntity.ok(orderDTO);
+      }
+      return ResponseEntity.notFound().build();
+    }catch (Exception e){
+      throw e;
     }
-    return ResponseEntity.notFound().build();
+
   }
 
   @PostMapping("/save")
   public ResponseEntity<?> save(@Valid @RequestBody OrderDTOSave orderDTO, BindingResult bindingResult){
-    if (bindingResult.hasErrors()){
-      return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
-    }
-    Order order = modelMapper.map(orderDTO, Order.class);
-    orderService.save(order);
+    try{
+      if (bindingResult.hasErrors()){
+        return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
+      }
+      Order order = modelMapper.map(orderDTO, Order.class);
+      orderService.save(order);
 
-    return ResponseEntity.ok(new ResponseOK("El pedido se completó correctamente"));
+      return ResponseEntity.ok(new ResponseOK("El pedido se completó correctamente"));
+    }catch (Exception e){
+      throw e;
+    }
+
   }
 
   @PutMapping("/update/{id}")
-  public ResponseEntity<?> update (@PathVariable String id, @RequestBody OrderDTOUpdate orderDTO){
-    Order order = modelMapper.map(orderDTO, Order.class);
+  public ResponseEntity<?> update (@PathVariable String id, @RequestBody OrderDTOSave orderDTO){
+    try{
+      Order order = modelMapper.map(orderDTO, Order.class);
 
-    Optional<Order> orderOptional = orderService.update(UUID.fromString(id), order);
-    if(orderOptional.isPresent()){
-      return ResponseEntity.ok(new ResponseOK("El pedido se actualisó correctamente"));
+      Optional<Order> orderOptional = orderService.update(UUID.fromString(id), order);
+      if(orderOptional.isPresent()){
+        return ResponseEntity.ok(new ResponseOK("El pedido se actualisó correctamente"));
+      }
+      return ResponseEntity.badRequest().build();
+    }catch (Exception e){
+      throw e;
     }
-    return ResponseEntity.badRequest().build();
+
   }
 
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<?> delete(@PathVariable String id){
-    Optional<Order> orderOptional = orderService.delete(UUID.fromString(id));
-    if (orderOptional.isPresent()){
-      return ResponseEntity.ok(new ResponseOK("El pedido se eliminó corrctamente"));
+    try{
+      Optional<Order> orderOptional = orderService.delete(UUID.fromString(id));
+      if (orderOptional.isPresent()){
+        return ResponseEntity.ok(new ResponseOK("El pedido se eliminó corrctamente"));
+      }
+      return ResponseEntity.notFound().build();
+    }catch (Exception e){
+      throw e;
     }
-    return ResponseEntity.notFound().build();
+
   }
 }

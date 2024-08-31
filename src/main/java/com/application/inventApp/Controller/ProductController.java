@@ -1,8 +1,8 @@
 package com.application.inventApp.Controller;
 
-import com.application.inventApp.Controller.DTO.ProductDTOFind;
-import com.application.inventApp.Controller.DTO.ProductDTOSave;
-import com.application.inventApp.Controller.DTO.ProductDTOUpdate;
+import com.application.inventApp.Controller.DTO.ProductsDTOs.ProductDTO;
+import com.application.inventApp.Controller.DTO.ProductsDTOs.ProductDTOFind;
+import com.application.inventApp.Controller.DTO.SaleDTOs.ProductDTOUpdate;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Product;
 import com.application.inventApp.Services.Impl.ProductService;
@@ -29,57 +29,79 @@ public class ProductController {
   private ModelMapper modelMapper = new ModelMapper();
 
   @GetMapping("/find-all")
-  public List<ProductDTOFind> findAll() {
-
-    List<ProductDTOFind> products = productService.findAll().stream().map(product -> {
-      ProductDTOFind productDTOFind = modelMapper.map(product, ProductDTOFind.class);
-      productDTOFind.setPrice(format.formaterMoney(product.getPrice()));
-      return productDTOFind;
-    }).toList();
-    return products;
+  public List<?> findAll() {
+    try {
+      List<ProductDTOFind> products = productService.findAll().stream().map(product -> {
+        ProductDTOFind productDTOFind = modelMapper.map(product, ProductDTOFind.class);
+        productDTOFind.setPrice(this.format.formaterMoney(product.getPrice()));
+        return productDTOFind;
+      }).toList();
+      return products;
+    } catch (Exception e) {
+      System.out.println(e);
+      throw e;
+    }
   }
 
   @GetMapping("/find-id/{id}")
-  public ResponseEntity<?> findById(@PathVariable String id){
-    Optional<Product> productOptional = productService.findById(UUID.fromString(id));
-    if (productOptional.isPresent()) {
-      Product product = productOptional.get();
-      ProductDTOFind productDTO = modelMapper.map(product, ProductDTOFind.class);
+  public ResponseEntity<?> findById(@PathVariable String id) {
+    try {
 
-      return ResponseEntity.ok(productDTO);
+      Optional<Product> productOptional = productService.findById(UUID.fromString(id));
+      if (productOptional.isPresent()) {
+        Product product = productOptional.get();
+        ProductDTOFind productDTO = modelMapper.map(product, ProductDTOFind.class);
+
+        return ResponseEntity.ok(productDTO);
+      }
+      return ResponseEntity.notFound().build();
+
+    } catch (Exception e) {
+      throw e;
     }
-    return ResponseEntity.notFound().build();
-
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody ProductDTOSave productDTO, BindingResult bindingResult) {
-    if (bindingResult.hasErrors()) {
-      return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
+  public ResponseEntity<?> save(@Valid @RequestBody ProductDTO productDTO, BindingResult bindingResult) {
+    try{
+      if (bindingResult.hasErrors()) {
+        return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
+      }
+      Product product = modelMapper.map(productDTO, Product.class);
+      productService.save(product);
+      return ResponseEntity.ok(new ResponseOK("El producto se creo correctamente"));
+    }catch (Exception e){
+      throw e;
     }
-    Product product = modelMapper.map(productDTO, Product.class);
-    productService.save(product);
-    return ResponseEntity.ok(new ResponseOK("El producto se creo correctamente"));
+
   }
 
   @PutMapping("/update/{id}")
   public ResponseEntity<?> update(@PathVariable String id, @RequestBody ProductDTOUpdate productDTO) {
-    Product product = modelMapper.map(productDTO, Product.class);
+    try{
+      Product product = modelMapper.map(productDTO, Product.class);
 
-    Optional<Product> productOptional = productService.update(UUID.fromString(id), product);
-    if (productOptional.isPresent()) {
-      return ResponseEntity.ok(new ResponseOK("El producto se actualizo correctamente"));
+      Optional<Product> productOptional = productService.update(UUID.fromString(id), product);
+      if (productOptional.isPresent()) {
+        return ResponseEntity.ok(new ResponseOK("El producto se actualizo correctamente"));
+      }
+      return ResponseEntity.notFound().build();
+    }catch (Exception e){
+      throw e;
     }
-    return ResponseEntity.notFound().build();
-
   }
 
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<?> delete(@PathVariable String id) {
-    Optional<Product> productOptional = productService.delete(UUID.fromString(id));
-    if (productOptional.isPresent()) {
-      return ResponseEntity.ok(new ResponseOK("El producto se elimino correctamente"));
+    try{
+      Optional<Product> productOptional = productService.delete(UUID.fromString(id));
+      if (productOptional.isPresent()) {
+        return ResponseEntity.ok(new ResponseOK("El producto se elimino correctamente"));
+      }
+      return ResponseEntity.notFound().build();
+    }catch (Exception e){
+      throw e;
     }
-    return ResponseEntity.notFound().build();
+
   }
 }

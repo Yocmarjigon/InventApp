@@ -1,6 +1,9 @@
 package com.application.inventApp.Controller.DTO.ValidationCustom;
 
+import com.application.inventApp.Controller.DTO.BaseEntityDTO;
+import com.application.inventApp.Controller.DTO.ProductsDTOs.ProductDTO;
 import com.application.inventApp.Entity.BaseEntity;
+import com.application.inventApp.Entity.Product;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

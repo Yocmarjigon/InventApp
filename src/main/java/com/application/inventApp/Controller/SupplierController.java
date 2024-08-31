@@ -1,8 +1,7 @@
 package com.application.inventApp.Controller;
 
-import com.application.inventApp.Controller.DTO.SupplierDTOFind;
-import com.application.inventApp.Controller.DTO.SupplierDTOSave;
-import com.application.inventApp.Controller.DTO.SupplierDTOUpdate;
+import com.application.inventApp.Controller.DTO.SupplierDTOs.SupplierDTOFind;
+import com.application.inventApp.Controller.DTO.SupplierDTOs.SupplierDTOSave;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Supplier;
 import com.application.inventApp.Services.Impl.SupplierService;
@@ -27,55 +26,79 @@ public class SupplierController {
 
   @GetMapping("/find-all")
   public ResponseEntity<?> findAll() {
-    List<SupplierDTOFind> suppliers = supplierService.findAll().stream().map(supplier -> modelMapper.map(supplier, SupplierDTOFind.class)).toList();
-    return ResponseEntity.ok(suppliers);
+    try{
+      List<SupplierDTOFind> suppliers = supplierService.findAll().stream().map(supplier -> modelMapper.map(supplier, SupplierDTOFind.class)).toList();
+      return ResponseEntity.ok(suppliers);
+    }catch (Exception e){
+      throw e;
+    }
+
   }
 
   @GetMapping("/find-id/{id}")
   public ResponseEntity<?> findById(@PathVariable String id) {
-    Optional<Supplier> supplier = supplierService.findById(UUID.fromString(id));
+    try {
+      Optional<Supplier> supplier = supplierService.findById(UUID.fromString(id));
 
-    if (supplier.isPresent()) {
-      Supplier supplierUp = supplier.get();
-      SupplierDTOFind supplierDTO = modelMapper.map(supplierUp, SupplierDTOFind.class);
-      return ResponseEntity.ok(supplierDTO);
+      if (supplier.isPresent()) {
+        Supplier supplierUp = supplier.get();
+        SupplierDTOFind supplierDTO = modelMapper.map(supplierUp, SupplierDTOFind.class);
+        return ResponseEntity.ok(supplierDTO);
+      }
+      return ResponseEntity.notFound().build();
+    }catch (Exception e){
+      throw e;
     }
-    return ResponseEntity.notFound().build();
+
   }
 
   @PostMapping("/save")
   public ResponseEntity<?> save(@Valid @RequestBody SupplierDTOSave supplierDTO, BindingResult bindingResult) {
-    if (bindingResult.hasErrors()){
-      return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
+    try{
+      if (bindingResult.hasErrors()){
+        return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);
+      }
+
+      Supplier supplier = modelMapper.map(supplierDTO, Supplier.class);
+      supplierService.save(supplier);
+      return ResponseEntity.ok(new ResponseOK("El proveedor se ha creado correctamente"));
+    }catch (Exception e){
+      throw e;
     }
 
-    Supplier supplier = modelMapper.map(supplierDTO, Supplier.class);
-    supplierService.save(supplier);
-    return ResponseEntity.ok(new ResponseOK("El proveedor se ha creado correctamente"));
   }
 
   @PutMapping("/update/{id}")
-  public ResponseEntity<?> update(@PathVariable String id, @RequestBody SupplierDTOUpdate supplierDTO) {
-    Supplier supplier = modelMapper.map(supplierDTO, Supplier.class);
+  public ResponseEntity<?> update(@PathVariable String id, @RequestBody SupplierDTOSave supplierDTO) {
+    try {
+      Supplier supplier = modelMapper.map(supplierDTO, Supplier.class);
 
-    Optional<Supplier> supplierOptional = supplierService.update(UUID.fromString(id), supplier);
+      Optional<Supplier> supplierOptional = supplierService.update(UUID.fromString(id), supplier);
 
-    if (supplierOptional.isPresent()) {
+      if (supplierOptional.isPresent()) {
 
-      return ResponseEntity.ok(new ResponseOK("El proveedor se actualizó correctamente"));
+        return ResponseEntity.ok(new ResponseOK("El proveedor se actualizó correctamente"));
 
+      }
+      return ResponseEntity.notFound().build();
+
+    }catch (Exception e){
+      throw e;
     }
-    return ResponseEntity.notFound().build();
 
   }
 
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<?> delete(@PathVariable String id) {
-    Optional<Supplier> supplierOptional = supplierService.delete(UUID.fromString(id));
-    if (supplierOptional.isPresent()) {
-      return ResponseEntity.ok(new ResponseOK("El proveedor se eliminó correctamente"));
+    try {
+      Optional<Supplier> supplierOptional = supplierService.delete(UUID.fromString(id));
+      if (supplierOptional.isPresent()) {
+        return ResponseEntity.ok(new ResponseOK("El proveedor se eliminó correctamente"));
+      }
+      return ResponseEntity.notFound().build();
+    }catch (Exception e){
+      throw e;
     }
-    return ResponseEntity.notFound().build();
   }
 
 

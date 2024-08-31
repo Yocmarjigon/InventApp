@@ -1,4 +1,4 @@
-package com.application.inventApp.Controller.DTO;
+package com.application.inventApp.Controller.DTO.ProductsDTOs;
 
 import com.application.inventApp.Controller.DTO.ValidationCustom.ObjectValid;
 import com.application.inventApp.Entity.Category;
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @Data
 @Builder
-public class ProductDTOSave {
+public class ProductDTO {
 
   @NotBlank(message = "El producto debe contar con un nombre")
   private String name;

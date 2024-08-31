@@ -1,4 +1,4 @@
-package com.application.inventApp.Controller.DTO;
+package com.application.inventApp.Controller.DTO.CategoryDTOs;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Builder
-public class CategoryDTOSave {
+public class CategoryDTO {
   @NotBlank(message = "La categoria debe contar con un nombre")
   private String name;
 

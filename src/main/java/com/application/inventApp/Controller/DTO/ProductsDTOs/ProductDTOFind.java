@@ -1,13 +1,10 @@
-package com.application.inventApp.Controller.DTO;
-
+package com.application.inventApp.Controller.DTO.ProductsDTOs;
 import com.application.inventApp.Entity.Category;
+import com.application.inventApp.Entity.Supplier;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.math.BigDecimal;
-import java.util.Date;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -20,7 +17,6 @@ public class ProductDTOFind {
   private String description;
   private String price;
   private int stock;
-  private Date dateAdd;
   private Category category;
-  private SupplierDTOSave supplier;
+  private SupplierProductFIndDTO supplier;
 }

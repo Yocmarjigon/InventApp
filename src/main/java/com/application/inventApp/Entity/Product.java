@@ -42,6 +42,4 @@ public class Product extends BaseEntity{
   @JsonIgnore
   private List<Sale> sales = new ArrayList<>();
 
-
-
 }
