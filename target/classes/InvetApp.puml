@@ -1,0 +1,89 @@
+@startuml
+
+' Define classes and attributes
+class Producto {
+  - nombre: String
+  - descripcion: String
+  - precioCompra: Float
+  - precioVenta: Float
+  - stockActual: Int
+  - stockMinimo: Int
+  - fechaAdquisicion: Date
+  + registrarProducto()
+  + actualizarProducto()
+  + eliminarProducto()
+}
+
+class Categoria {
+  - nombre: String
+  + agregarCategoria()
+  + actualizarCategoria()
+  + eliminarCategoria()
+}
+
+class Proveedor {
+  - nombre: String
+  - contacto: String
+  - telefono: String
+  - correoElectronico: String
+  - direccion: String
+  + registrarProveedor()
+  + actualizarProveedor()
+  + eliminarProveedor()
+}
+
+class Cliente {
+  - nombre: String
+  - contacto: String
+  - telefono: String
+  - correoElectronico: String
+  - direccion: String
+  + registrarCliente()
+  + actualizarCliente()
+  + eliminarCliente()
+}
+
+class Venta {
+  - fecha: Date
+  - productos: List<Producto>
+  - cantidad: Map<Producto, Int>
+  - precioTotal: Float
+  - metodoPago: String
+  + registrarVenta()
+  + generarFactura()
+}
+
+class Pedido {
+  - fecha: Date
+  - productos: List<Producto>
+  - cantidad: Map<Producto, Int>
+  - estado: String
+  + registrarPedido()
+  + actualizarEstado()
+  + recibirPedido()
+}
+
+class Usuario {
+  - nombreUsuario: String
+  - contrasena: String
+  - rol: String
+  + iniciarSesion()
+  + cerrarSesion()
+}
+
+' Define relationships
+Producto --> Categoria : "pertenece a"
+Producto --> Proveedor : "es suministrado por"
+Categoria "1" -- "*" Producto : "contiene"
+Proveedor "1" -- "*" Producto : "suministra"
+Cliente "1" -- "*" Venta : "realiza"
+Venta "1" -- "*" Producto : "contiene"
+Pedido "1" -- "*" Producto : "solicita"
+Pedido --> Proveedor : "realiza pedido a"
+Usuario "1" -- "*" Pedido : "gestiona"
+Usuario "1" -- "*" Venta : "gestiona"
+Usuario "1" -- "*" Cliente : "gestiona"
+Usuario "1" -- "*" Proveedor : "gestiona"
+Usuario "1" -- "*" Producto : "gestiona"
+
+@enduml
