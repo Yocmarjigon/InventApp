@@ -47,7 +47,7 @@ public class SecurityConfig {
               "/sale/**"
           ).hasAnyRole("VENDEDOR", "GESTOR", "ADMIN");
           http.requestMatchers("/user/**").hasAnyRole("ADMIN");
-          http.requestMatchers("/auth/login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll();
+          http.requestMatchers("/auth/login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html", "/notify/**").permitAll();
           http.anyRequest().denyAll();
         })
         .addFilterBefore(new JwtTokenValidator(jwtUtils), BasicAuthenticationFilter.class)

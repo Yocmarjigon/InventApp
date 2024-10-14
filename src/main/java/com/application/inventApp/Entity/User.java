@@ -34,9 +34,9 @@ public class User extends BaseEntity{
   @Column(name = "credential_No_Expired")
   private boolean credentialNoExpired = true;
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
   private List<Order> orders = new ArrayList<>();
 
-  @OneToMany(mappedBy = "user", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(mappedBy = "user", cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
   private List<Sale> sales = new ArrayList<>();
 }

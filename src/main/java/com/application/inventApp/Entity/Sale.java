@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.List;
 @Entity(name = "venta")
 public class Sale extends BaseEntity{
   @Column(name = "fecha")
-  @JsonFormat( shape = JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy")
   private Date date;
 
   @Column(name = "precioTotal")

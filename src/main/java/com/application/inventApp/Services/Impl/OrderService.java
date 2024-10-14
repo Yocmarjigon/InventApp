@@ -1,9 +1,13 @@
 package com.application.inventApp.Services.Impl;
 
 import com.application.inventApp.Entity.Order;
+import com.application.inventApp.Entity.User;
+import com.application.inventApp.Exception.NotFoundException;
 import com.application.inventApp.Repository.OrderRepository;
 import com.application.inventApp.Services.IOrderService;
 import com.application.inventApp.Utils.Format;
+import com.application.inventApp.Utils.Utils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +21,7 @@ public class OrderService implements IOrderService {
   private OrderRepository orderRepository;
   @Autowired
   private Format formatDate;
+  @Autowired Utils utils;
 
   @Override
   public List<Order> findAll() {
@@ -29,9 +34,12 @@ public class OrderService implements IOrderService {
   }
 
   @Override
-  public void save(Order order) {
+  public void save(Order order) throws NotFoundException {
+    User user = this.utils.findUserLogging();
+    order.setUser(user);
     order.setDate(formatDate.getDateFormat());
     order.setDateArrival(formatDate.formaterDate(order.getDateArrival()));
+    
     orderRepository.save(order);
   }
 

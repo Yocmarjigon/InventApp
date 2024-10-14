@@ -6,10 +6,12 @@ import com.application.inventApp.Controller.DTO.SaleDTOs.SaleDTOUpdate;
 import com.application.inventApp.Controller.DTO.SaleDTOs.SaleItemsDTO;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Sale;
+import com.application.inventApp.Exception.NotFoundException;
 import com.application.inventApp.Exception.StockException;
 import com.application.inventApp.Services.Impl.SaleService;
 
 import com.application.inventApp.Utils.Format;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,10 +34,10 @@ public class SaleController {
   private ModelMapper modelMapper = new ModelMapper();
 
   @GetMapping("/find-all")
-  public ResponseEntity<?> findAll() {
+  public ResponseEntity<?> findAll() throws JWTVerificationException {
     try {
-      List<SaleDTOFind> saleDTOS = saleService.findAll().stream().map(sale -> {
 
+      List<SaleDTOFind> saleDTOS = saleService.findAll().stream().map(sale -> {
         SaleDTOFind saleDTOFind = modelMapper.map(sale, SaleDTOFind.class);
 
         saleDTOFind.setProducts(sale.getProducts().stream().map(product -> {
@@ -43,6 +45,7 @@ public class SaleController {
           productDTOSaleFind.setPrice(format.formaterMoney(product.getPrice()));
           return productDTOSaleFind;
         }).toList());
+
 
         saleDTOFind.setPriceTotal(format.formaterMoney(sale.getPriceTotal()));
         return saleDTOFind;
@@ -74,7 +77,7 @@ public class SaleController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody SaleItemsDTO saleDTO, BindingResult bindingResult) throws StockException {
+  public ResponseEntity<?> save(@Valid @RequestBody SaleItemsDTO saleDTO, BindingResult bindingResult) throws StockException, NotFoundException {
     try {
       if (bindingResult.hasErrors()) {
         return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);

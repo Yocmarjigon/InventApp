@@ -2,8 +2,12 @@ package com.application.inventApp.Services.Impl;
 
 
 import com.application.inventApp.Entity.Supplier;
+import com.application.inventApp.Entity.User;
+import com.application.inventApp.Exception.NotFoundException;
 import com.application.inventApp.Repository.SupplierRepository;
 import com.application.inventApp.Services.ISupplierService;
+import com.application.inventApp.Utils.Utils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,9 +17,11 @@ import java.util.UUID;
 
 @Service
 public class SupplierService implements ISupplierService {
+
   @Autowired
   private SupplierRepository supplierRepository;
-
+  @Autowired
+  private Utils utils;
 
   @Override
   public List<Supplier> findAll() {
@@ -28,7 +34,9 @@ public class SupplierService implements ISupplierService {
   }
 
   @Override
-  public void save(Supplier supplier) {
+  public void save(Supplier supplier) throws NotFoundException {
+    User user = this.utils.findUserLogging();
+    supplier.setUser(user);
     supplierRepository.save(supplier);
   }
 

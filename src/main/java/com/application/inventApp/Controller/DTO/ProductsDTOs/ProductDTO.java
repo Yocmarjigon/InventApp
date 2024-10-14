@@ -19,8 +19,6 @@ public class ProductDTO {
 
   @NotBlank(message = "El producto debe contar con un nombre")
   private String name;
-  @Size(min = 20, max = 400, message = "La descripción tener como minimo 100 caracteres y maximo 400")
-  private String description;
   @NotNull
   @DecimalMin(value = "99", inclusive = false, message = "El precio debe ser mayor o igual a 100")
   @Digits(integer = 12, fraction = 2, message = "El precio no debe contener mas de 12 digitos y 2 decimales")

@@ -44,7 +44,6 @@ public class ProductService implements IProductService {
     if (productOptional.isPresent()) {
       Product productUp = productOptional.get();
       productUp.setName(product.getName());
-      productUp.setDescription(product.getDescription());
       productUp.setPrice(product.getPrice());
       productUp.setStock(product.getStock());
       productUp.setDateAdd(product.getDateAdd());

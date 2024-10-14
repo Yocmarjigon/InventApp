@@ -18,7 +18,7 @@ public class Category extends BaseEntity{
   @Column(name = "nombre")
   private String name;
 
-  @OneToMany(mappedBy = "category", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(mappedBy = "category", cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
   @JsonIgnore
   private List<Product> products = new ArrayList<>();
 

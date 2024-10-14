@@ -20,8 +20,6 @@ public class Product extends BaseEntity{
 
   @Column(name = "nombre")
   private String name;
-  @Column(name = "descripcion")
-  private String description;
   @Column(name = "precio", precision = 14, scale = 2)
   private BigDecimal price;
   private int stock;
@@ -38,7 +36,7 @@ public class Product extends BaseEntity{
   @JoinColumn(name = "id_proveedor")
   private Supplier supplier;
 
-  @ManyToMany(mappedBy = "products")
+  @ManyToMany(mappedBy = "products", cascade = CascadeType.MERGE)
   @JsonIgnore
   private List<Sale> sales = new ArrayList<>();
 

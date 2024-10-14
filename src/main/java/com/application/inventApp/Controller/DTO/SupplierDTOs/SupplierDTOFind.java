@@ -1,5 +1,6 @@
 package com.application.inventApp.Controller.DTO.SupplierDTOs;
 
+import com.application.inventApp.Controller.DTO.UserDTOs.UserDTOFind;
 import com.application.inventApp.Entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,5 +18,5 @@ public class SupplierDTOFind {
   private String name;
   private String contact;
   private String email;
-  private User user;
+  private UserDTOFind user;
 }

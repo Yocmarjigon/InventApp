@@ -41,8 +41,8 @@ public class JwtUtils {
     return jwtToken;
   }
 
-  public DecodedJWT validateToken(String token) {
-    try {
+  public DecodedJWT validateToken(String token) throws JWTVerificationException {
+
       Algorithm algorithm = Algorithm.HMAC256(this.privateKey);
       JWTVerifier verifier = JWT.require(algorithm)
           .withIssuer(this.userGenetator)
@@ -50,9 +50,6 @@ public class JwtUtils {
       DecodedJWT decodedJWT = verifier.verify(token);
       return decodedJWT;
 
-    } catch (JWTVerificationException e) {
-      throw new JWTVerificationException("Token invalido");
-    }
   }
 
   public String extractUsername(DecodedJWT decodedJWT){

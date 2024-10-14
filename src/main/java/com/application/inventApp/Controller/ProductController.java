@@ -34,6 +34,7 @@ public class ProductController {
       List<ProductDTOFind> products = productService.findAll().stream().map(product -> {
         ProductDTOFind productDTOFind = modelMapper.map(product, ProductDTOFind.class);
         productDTOFind.setPrice(this.format.formaterMoney(product.getPrice()));
+        productDTOFind.setDateAdd(format.formaterDate(product.getDateAdd()));
         return productDTOFind;
       }).toList();
       return products;

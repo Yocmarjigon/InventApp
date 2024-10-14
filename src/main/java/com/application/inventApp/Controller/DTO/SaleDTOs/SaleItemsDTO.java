@@ -15,5 +15,6 @@ import java.util.List;
 public class SaleItemsDTO {
   @NumberSaleValid(message = "El producto debe tener un item para la compra")
   private List<ProductsSoldDTO> products;
+  
 
 }

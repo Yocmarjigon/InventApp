@@ -4,6 +4,7 @@ import com.application.inventApp.Controller.DTO.SupplierDTOs.SupplierDTOFind;
 import com.application.inventApp.Controller.DTO.SupplierDTOs.SupplierDTOSave;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Supplier;
+import com.application.inventApp.Exception.NotFoundException;
 import com.application.inventApp.Services.Impl.SupplierService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -53,7 +54,7 @@ public class SupplierController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody SupplierDTOSave supplierDTO, BindingResult bindingResult) {
+  public ResponseEntity<?> save(@Valid @RequestBody SupplierDTOSave supplierDTO, BindingResult bindingResult) throws NotFoundException {
     try{
       if (bindingResult.hasErrors()){
         return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);

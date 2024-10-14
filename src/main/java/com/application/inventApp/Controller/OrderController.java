@@ -4,6 +4,7 @@ import com.application.inventApp.Controller.DTO.OrderDTOs.OrderDTOFind;
 import com.application.inventApp.Controller.DTO.OrderDTOs.OrderDTOSave;
 import com.application.inventApp.Controller.Response.ResponseOK;
 import com.application.inventApp.Entity.Order;
+import com.application.inventApp.Exception.NotFoundException;
 import com.application.inventApp.Services.Impl.OrderService;
 import jakarta.validation.Valid;
 import org.modelmapper.ModelMapper;
@@ -56,7 +57,7 @@ public class OrderController {
   }
 
   @PostMapping("/save")
-  public ResponseEntity<?> save(@Valid @RequestBody OrderDTOSave orderDTO, BindingResult bindingResult){
+  public ResponseEntity<?> save(@Valid @RequestBody OrderDTOSave orderDTO, BindingResult bindingResult) throws NotFoundException {
     try{
       if (bindingResult.hasErrors()){
         return new ResponseEntity<>(new ResponseOK(bindingResult.getFieldError().getDefaultMessage()), HttpStatus.BAD_REQUEST);

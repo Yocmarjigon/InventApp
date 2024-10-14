@@ -1,10 +1,12 @@
 package com.application.inventApp.Controller.DTO.ProductsDTOs;
 import com.application.inventApp.Entity.Category;
-import com.application.inventApp.Entity.Supplier;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -14,7 +16,8 @@ import java.util.UUID;
 public class ProductDTOFind {
   private UUID id;
   private String name;
-  private String description;
+  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+  private Date dateAdd;
   private String price;
   private int stock;
   private Category category;

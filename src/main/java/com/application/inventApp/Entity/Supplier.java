@@ -24,7 +24,7 @@ public class Supplier extends BaseEntity{
   @Column(name = "direccion")
   private String addres;
 
-  @OneToMany(mappedBy = "supplier", cascade = CascadeType.PERSIST, fetch = FetchType.LAZY, orphanRemoval = true)
+  @OneToMany(mappedBy = "supplier", cascade = CascadeType.MERGE, fetch = FetchType.LAZY, orphanRemoval = true)
   private List<Product> products = new ArrayList<>();
 
   @OneToMany(mappedBy = "supplier", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY, orphanRemoval = true)
